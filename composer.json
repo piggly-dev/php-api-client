@@ -1,0 +1,34 @@
+{
+    "name": "piggly/php-api-client",
+    "description": "A client starter-kit used to interact with any REST API.",
+    "keywords": [
+        "piggly",
+        "api",
+        "restful api",
+        "client", 
+        "curl"
+    ],
+    "type": "library",
+    "homepage": "https://github.com/piggly-dev/php-api-client",
+    "autoload": {
+        "psr-4": {
+            "Piggly\\ApiClient\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.3 || ^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Caique Araujo",
+            "email": "caique@piggly.com.br",
+            "homepage": "https://github.com/caiquearaujo",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "stable"
+}
