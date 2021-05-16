@@ -45,7 +45,7 @@ class Configuration
 	 * 
 	 * @return void
 	 */
-	private function __construct ()
+	public function __construct ()
 	{
 		$this->_settings = [
 			'api.keys' => [],
@@ -153,6 +153,14 @@ class Configuration
 	 */
 	public function headers () : HeaderBag
 	{ return $this->_settings['http.headers']; }
+
+	/**
+	 * Clone HTTP headers and manipulate them.
+	 *
+	 * @return HeaderBag
+	 */
+	public function cloneHeaders () : HeaderBag
+	{ return (clone $this->_settings['http.headers']); }
 
 	/**
 	 * Set the HTTP host.
@@ -365,16 +373,17 @@ class Configuration
 	 * CURL_PROXY_USER (string)
 	 * CURL_PROXY_PASSWORD (string)
 	 *
+	 * @param string $path Absolute path to env files.
 	 * @param string $env
 	 * @return Configuration
 	 */
-	public function env ( string $env = null )
+	public function env ( string $path, string $env = null )
 	{ 
 		$env = is_null($env) ? 'default' : trim($env, '.');
 		$this->_settings['env'] = $env; 
 		
 		(\Dotenv\Dotenv::createImmutable(
-			__DIR__, 
+			$path, 
 			$env === 'default' ? '.env' : '.env.'.$env
 		))->load();
 
@@ -387,7 +396,7 @@ class Configuration
 			'CURL_HTTP_TIMEOUT' => 'timeout',
 			'CURL_HTTP_CONN_TIMEOUT' => 'connectionTimeout',
 			'CURL_PROXY_HOST' => 'proxyHost',
-			'CURL_PROXY_PORT' => 'proxyPost',
+			'CURL_PROXY_PORT' => 'proxyPort',
 			'CURL_PROXY_TYPE' => 'proxyType',
 			'CURL_PROXY_USER' => 'proxyUser',
 			'CURL_PROXY_PASSWORD' => 'proxyPassword'
@@ -477,7 +486,7 @@ class Configuration
 	 * One for all instances.
 	 *
 	 * @param Configuration $config
-	 * @return Configuration
+	 * @return Configuration Default configuration
 	 */
 	public static function default ( Configuration $config ) : Configuration
 	{ self::$_default = $config; return $config; }

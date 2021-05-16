@@ -390,7 +390,7 @@ class Request
 		}
 
 		// Prepare headers
-		$headers = $this->config->headers()->mergeWith($this->_headers);
+		$headers = $this->config->cloneHeaders()->mergeWith($this->_headers);
 		// Prepare post data
 		$postData = $this->preparePostData($headers, $this->_data);
 
