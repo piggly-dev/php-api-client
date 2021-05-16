@@ -15,12 +15,11 @@
   <coverage>
     <include>
       <directory suffix=".php">./src</directory>
-      <directory suffix=".php">./tests/src</directory>
     </include>
   </coverage>
   <testsuites>
     <testsuite name="Piggly Unit Tests">
-      <directory>./tests/units</directory>
+      <directory>./tests</directory>
     </testsuite>
   </testsuites>
 </phpunit>

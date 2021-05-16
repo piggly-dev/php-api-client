@@ -1,9 +1,9 @@
 <?php
-namespace Piggy\ApiClient;
+namespace Piggly\ApiClient;
 
 use InvalidArgumentException;
 use Monolog\Logger;
-use Piggy\ApiClient\Supports\HeaderBag;
+use Piggly\ApiClient\Supports\HeaderBag;
 
 /**
  * The master configuration to ApiClient object.

@@ -1,10 +1,10 @@
 <?php
-namespace Piggy\ApiClient;
+namespace Piggly\ApiClient;
 
-use Piggy\ApiClient\Configuration;
-use Piggy\ApiClient\Exceptions\ApiRequestException;
-use Piggy\ApiClient\Exceptions\ApiResponseException;
-use Piggy\ApiClient\Supports\HeaderBag;
+use Piggly\ApiClient\Configuration;
+use Piggly\ApiClient\Exceptions\ApiRequestException;
+use Piggly\ApiClient\Exceptions\ApiResponseException;
+use Piggly\ApiClient\Supports\HeaderBag;
 
 /**
  * API request.

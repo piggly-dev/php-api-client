@@ -1,9 +1,9 @@
 <?php
-namespace Piggy\ApiClient\Exceptions;
+namespace Piggly\ApiClient\Exceptions;
 
 use Exception;
 use Monolog\Logger;
-use Piggy\ApiClient\Configuration;
+use Piggly\ApiClient\Configuration;
 
 /**
  * An Api Exception which makes link to server response object,

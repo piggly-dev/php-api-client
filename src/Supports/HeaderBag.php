@@ -1,8 +1,8 @@
 <?php
-namespace Piggy\ApiClient\Supports;
+namespace Piggly\ApiClient\Supports;
 
 use InvalidArgumentException;
-
+ 
 /**
  * Class to better manages HTTP headers.
  * 
@@ -19,7 +19,7 @@ class HeaderBag
 	 *
 	 * @var array
 	 */
-	private $_headers;
+	private $_headers = [];
 
 	/**
 	 * Raws headers.
@@ -29,7 +29,7 @@ class HeaderBag
 	private $_raws = [];
 
 	/**
-	 * Constructor with default headers.
+	 * Constructor with default headers, including $key and $content.
 	 *
 	 * @param array $headers
 	 * @return void
