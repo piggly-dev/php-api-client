@@ -3,6 +3,8 @@ namespace Piggy\ApiClient\Client;
 
 use CURLFile;
 use InvalidArgumentException;
+use Piggy\ApiClient\Exceptions\ApiRequestException;
+use Piggy\ApiClient\Exceptions\ApiResponseException;
 
 class ApiClient
 {
@@ -298,12 +300,20 @@ class ApiClient
 	 *
 	 * @param array|object $postData May be an array or object containing properties.
 	 * @return ApiClient
-	 * @throws InvalidArgumentException
+	 * @throws ApiRequestException
 	 */
 	public function data ( $postData )
 	{ 
 		if ( !\is_object($postData) && !\is_array($postData) )
-		{ throw new InvalidArgumentException('Post data must be an array or an object containing properties.'); }
+		{ 
+			throw new ApiRequestException(
+				'Post data must be an array or an object containing properties.',
+				5,
+				$this->_method,
+				$this->getUri(),
+				$this->config
+			); 
+		}
 
 		$this->_data = $postData; 
 		return $this; 
@@ -316,12 +326,20 @@ class ApiClient
 	 * @see https://www.php.net/manual/pt_BR/function.http-build-query
 	 * @param array|object $query May be an array or object containing properties.
 	 * @return ApiClient
-	 * @throws InvalidArgumentException
+	 * @throws ApiRequestException
 	 */
 	public function query ( $query )
 	{ 
 		if ( !\is_object($query) && !\is_array($query) )
-		{ throw new InvalidArgumentException('Query parameters must be an array or an object containing properties.'); }
+		{ 
+			throw new ApiRequestException(
+				'Query parameters must be an array or an object containing properties.',
+				5,
+				$this->_method,
+				$this->getUri(),
+				$this->config
+			); 
+		}
 
 		$this->_query = \http_build_query($query); return $this; 
 	}
@@ -332,12 +350,20 @@ class ApiClient
 	 *
 	 * @param string $type
 	 * @return ApiClient
-	 * @throws InvalidArgumentException
+	 * @throws ApiRequestException
 	 */
 	public function responseType ( string $type )
 	{
 		if ( !\in_array($type, ['\SplFileObject', 'string', 'array'], true) === false )
-		{ throw new InvalidArgumentException('Response type must be one of: string, array or \SplFileObject.'); }
+		{ 
+			throw new ApiRequestException(
+				'Response type must be one of: string, array or \SplFileObject.',
+				5,
+				$this->_method,
+				$this->getUri(),
+				$this->config
+			); 
+		}
 
 		$this->_responseType = $type;
 		return $this;
@@ -356,13 +382,21 @@ class ApiClient
 	 * Does an API call.
 	 *
 	 * @return array In format [$http_body, $http_code, $http_header].
-    * @throws ApiException on a non 2xx response
-    * @throws InvalidArgumentException if request HTTP method was not set.
+    * @throws ApiRequestException something went wrong to request
+    * @throws ApiResponseException on a non 2xx response
 	 */
 	public function call ()
 	{
 		if ( empty($this->_method) || empty($this->_path) )
-		{ throw new InvalidArgumentException('Cannot do an API call before set Request HTTP method.'); }
+		{ 
+			throw new ApiRequestException(
+				'Cannot do an API call before set Request HTTP method and/or path.',
+				10,
+				$this->_method,
+				$this->getUri(),
+				$this->config
+			); 
+		}
 
 		// Prepare headers
 		$headers = $this->config->headers()->mergeWith($this->_headers);
@@ -473,7 +507,16 @@ class ApiClient
 			else
 			{ $message = \sprintf('API call to `%s` failed: Unknown reasion.', $uri); }
 
-			$e = new ApiException($message);
+			$e = new ApiResponseException(
+				$message,
+				0,
+				$http_header,
+				$http_body,
+				$this->_method,
+				$this->getUri(),
+				$this->config
+			);
+
 			$e->setReponseObject($response_info);
 			throw $e;
 		}
@@ -487,7 +530,7 @@ class ApiClient
 			if ( \json_last_error() > 0 )
 			{ $data = $http_body; }
 
-			throw new ApiException(
+			throw new ApiResponseException(
 				\sprintf(
 					'Error while requesting server, received a non successful HTTP code `%s` with response body: %s.',
 					$response_info['http_code'],
@@ -495,7 +538,10 @@ class ApiClient
 				),
 				$response_info['http_code'],
 				$http_header,
-				$data
+				$data,
+				$this->_method,
+				$this->getUri(),
+				$this->config
 			);
 		}
 
@@ -643,7 +689,7 @@ class ApiClient
 	 */
 	protected function getUri () : string
 	{ 
-		$uri = $this->config->getHost().'/'.$this->_path; 
+		$uri = $this->config->getHost().'/'.($this->_path ?? ''); 
 
 		if ( !empty($this->_query) )
 		{ return \sprintf('%s?%s', $uri, $this->_query); }

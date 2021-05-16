@@ -1,7 +1,10 @@
 <?php
-namespace Piggy\ApiClient\Client;
+namespace Piggy\ApiClient\Exceptions;
 
 use Exception;
+use Monolog\Logger;
+use Piggy\ApiClient\Client\Configuration;
+use Piggy\ApiClient\Client\HeaderBag;
 
 /**
  * An Api Exception which makes link to server response object,
@@ -13,8 +16,20 @@ use Exception;
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
-class ApiException extends Exception
+class ApiResponseException extends Exception
 {
+	/**
+	 * HTTP request method.
+	 * @var string
+	 */
+	protected $_method;
+
+	/**
+	 * HTTP request uri.
+	 * @var string
+	 */
+	protected $_uri;
+
 	/**
 	 * The HTTP body of the server response
 	 * either as JSON or string.
@@ -45,20 +60,47 @@ class ApiException extends Exception
 	 * @param integer $code
 	 * @param HeaderBag|array|string $headers
 	 * @param mixed $body
+	 * @param string $method
+	 * @param string $uri
+	 * @param Configuration $config
 	 * @return void
 	 */
 	public function __construct(
 		$message = "",
 		$code = 0,
 		$headers = null,
-		$body = null
+		$body = null,
+		$method = null,
+		$uri = null,
+		$config = null
 	)
 	{
 		parent::__construct($message, $code);
 
 		$this->_headers = HeaderBag::prepare($headers);
 		$this->_body = $body;
+		$this->_method = $method;
+		$this->_uri = $uri;
+
+		if ( $config instanceof Configuration )
+		{ $config->log(Logger::ERROR, 'api.request.error -> '.$message, ['method' => $this->_method, 'uri' => $this->_uri]); }
 	}
+
+	/**
+	 * Get the HTTP method.
+	 *
+	 * @return mixed
+	 */
+	public function getHTTPMethod ()
+	{ return $this->_method ?? null; }
+
+	/**
+	 * Get the HTTP uri.
+	 *
+	 * @return mixed
+	 */
+	public function getUri ()
+	{ return $this->_uri ?? null; }
 
 	/**
 	 * Get the HTTP body of the server response 
