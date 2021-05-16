@@ -10,7 +10,33 @@ class HeaderBag
 	 *
 	 * @var array
 	 */
-	private $_headers = [];
+	private $_headers;
+
+	/**
+	 * Raws headers.
+	 *
+	 * @var array
+	 */
+	private $_raws = [];
+
+	/**
+	 * Constructor with default headers.
+	 *
+	 * @param array $headers
+	 * @return void
+	 */
+	public function __construct ( array $headers = [] )
+	{ $this->_headers = $headers; }
+
+	/**
+	 * Add a raw header. Adding it, will not be possible to
+	 * use this class methods to manipulate it before.
+	 *
+	 * @param string $raw
+	 * @return HeaderBag
+	 */
+	public function raw ( string $raw )
+	{ $this->_raws[] = $raw; return $this; }
 
 	/**
 	 * Add a new header to bag.
@@ -18,6 +44,7 @@ class HeaderBag
 	 * @param string $key
 	 * @param string|array $content
 	 * @return HeaderBag
+	 * @throws InvalidArgumentException If $content is not string or array.
 	 */
 	public function add ( string $key, $content )
 	{ 
@@ -51,6 +78,19 @@ class HeaderBag
 	{ unset($this->_headers[$key]); return $this; }
 
 	/**
+	 * Merge current headers to new ones.
+	 *
+	 * @param HeaderBag|array|string $headers
+	 * @return HeaderBag
+	 */
+	public function mergeWith ( $headers )
+	{
+		$headers = static::prepare($headers);
+		$this->_headers = \array_merge($this->_headers, $headers->all());
+		return $this;
+	}
+
+	/**
 	 * Check it has the Header $key.
 	 *
 	 * @param string $key
@@ -75,12 +115,59 @@ class HeaderBag
 	}
 
 	/**
-	 * Parse HTTP headers to an array.
-	 * 
-	 * @param string $raw Raw HTTP Headers
-	 * @return array Including all headers
+	 * Prepare an array to CURLOPT_HTTPHEADER.
+	 *
+	 * @return array
 	 */
-	protected function _parseHTTPHeaders ( string $raw ) : array
+	public function cURL () : array
+	{
+		$headers = [];
+
+		foreach ( $this->_headers as $key => $content )
+		{ $headers[] = "$key: $content"; }
+
+		foreach ( $this->_raws as $header )
+		{ $headers[] = $header; }
+
+		return $headers;
+	}
+
+	/**
+	 * Get all headers.
+	 *
+	 * @return array
+	 */
+	public function all () : array
+	{ return $this->_headers; }
+
+	/**
+	 * Prepare $headers argument transforming it
+	 * to a HeaderBag object.
+	 *
+	 * @param HeaderBag|array|string $headers
+	 * @return HeaderBag
+	 */
+	public static function prepare ( $headers ) : HeaderBag
+	{
+		if ( $headers instanceof HeaderBag )
+		{ return $headers; }
+
+		if ( \is_array($headers) )
+		{ return new HeaderBag($headers); }
+
+		if ( \is_string($headers) )
+		{ return static::fromString($headers); }
+
+		throw new InvalidArgumentException('Unexpected headers, it must be one of: string, array or HeaderBag object.');
+	}
+
+	/**
+	 * Get headers from CURL headers $raw string
+	 *
+	 * @param string $raw
+	 * @return HeaderBag
+	 */
+	protected static function fromString ( string $raw ) : HeaderBag
 	{
 		$raw = explode('\n', $raw);
 		$headers = [];
@@ -103,6 +190,6 @@ class HeaderBag
 			$headers[$key] = \array_merge([ $headers[$key] ], [ $content ]);
 		}
 
-		return $headers;
+		return new HeaderBag($headers);
 	}
 }

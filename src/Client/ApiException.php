@@ -24,10 +24,10 @@ class ApiException extends Exception
 	protected $_body;
 
 	/**
-	 * An array with all HTTP headers from
+	 * All HTTP headers from
 	 * the server response.
 	 *
-	 * @var array<string>
+	 * @var HeaderBag
 	 */
 	protected $_headers;
 
@@ -43,7 +43,7 @@ class ApiException extends Exception
 	 *
 	 * @param string $message
 	 * @param integer $code
-	 * @param array<string> $headers
+	 * @param HeaderBag|array|string $headers
 	 * @param mixed $body
 	 * @return void
 	 */
@@ -56,7 +56,7 @@ class ApiException extends Exception
 	{
 		parent::__construct($message, $code);
 
-		$this->_headers = $headers;
+		$this->_headers = HeaderBag::prepare($headers);
 		$this->_body = $body;
 	}
 
@@ -70,13 +70,13 @@ class ApiException extends Exception
 	{ return $this->_body ?? null; }
 
 	/**
-	 * An array with all HTTP headers from
+	 * All HTTP headers from
 	 * the server response.
 	 *
-	 * @return array<string>
+	 * @return HeaderBag|null
 	 */
-	public function getResponseHeaders () : array
-	{ return $this->_headers ?? []; }
+	public function getResponseHeaders () : ?HeaderBag
+	{ return $this->_headers ?? null; }
 
 	/**
 	 * Set the deseralized response object 

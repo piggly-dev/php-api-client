@@ -47,7 +47,7 @@ class Configuration
 	{
 		$this->_settings = [
 			'api.keys' => [],
-			'http.headers' => [],
+			'http.headers' => new HeaderBag(),
 			'custom' => []
 		];
 	}
@@ -145,31 +145,12 @@ class Configuration
 	{ return $this->_settings['http.basic.password'] ?? null; }
 
 	/**
-	 * Set a new HTTP header by $key.
+	 * Access HTTP headers and manipulate them.
 	 *
-	 * @param string $key
-	 * @param string $content
-	 * @return Configuration
+	 * @return HeaderBag
 	 */
-	public function header ( string $key, string $content )
-	{ $this->_settings['http.headers'][$key] = $content; return $this; }
-
-	/**
-	 * Unset HTTP header by $key.
-	 *
-	 * @param string $key
-	 * @return Configuration
-	 */
-	public function unsetHeader ( string $key )
-	{ unset($this->_settings['http.headers'][$key]); return $this; }
-
-	/**
-	 * Get all HTTP headers.
-	 *
-	 * @return array
-	 */
-	public function getHeaders () : array
-	{ return $this->_settings['http.headers'] ?? []; }
+	public function headers () : HeaderBag
+	{ return $this->_settings['http.headers']; }
 
 	/**
 	 * Set the HTTP host.
