@@ -129,6 +129,7 @@ class Request
 		{ $config = Configuration::getDefault(); }
 
 		$this->config = $config;
+		$this->_headers = new HeaderBag();
 	}
 
 	/**
@@ -165,7 +166,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
-	 * @return void
+	 * @return Request
 	 */
 	public function head (
 		string $path,
@@ -182,7 +183,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
-	 * @return void
+	 * @return Request
 	 */
 	public function get (
 		string $path,
@@ -200,7 +201,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
-	 * @return void
+	 * @return Request
 	 */
 	public function options (
 		string $path,
@@ -219,7 +220,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
-	 * @return void
+	 * @return Request
 	 */
 	public function patch (
 		string $path,
@@ -238,7 +239,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
-	 * @return void
+	 * @return Request
 	 */
 	public function post (
 		string $path,
@@ -257,7 +258,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
-	 * @return void
+	 * @return Request
 	 */
 	public function put (
 		string $path,
@@ -269,13 +270,21 @@ class Request
 	{ return $this->_withBody(self::$PUT, $path, $body, $query, $headers, $responseType); }
 
 	/**
-	 * Set current HTTP headers.
+	 * Get current HTTP headers.
+	 *
+	 * @return HeaderBag
+	 */
+	public function headers () : HeaderBag
+	{ return $this->_headers; }
+
+	/**
+	 * Applies headers to current headers.
 	 *
 	 * @param HeaderBag|array|string $headers
 	 * @return Request
 	 */
-	public function headers ( $headers )
-	{ $this->_headers = HeaderBag::prepare($headers); return $this; }
+	public function applyHeaders ( $headers )
+	{ $this->_headers->apply($headers); return $this; }
 
 	/**
 	 * Prepare Authorization header with api key $identifier
@@ -390,7 +399,7 @@ class Request
 		}
 
 		// Prepare headers
-		$headers = $this->config->cloneHeaders()->mergeWith($this->_headers);
+		$headers = $this->config->cloneHeaders()->mergeWith($this->_headers??[]);
 		// Prepare post data
 		$postData = $this->preparePostData($headers, $this->_data);
 
@@ -540,7 +549,7 @@ class Request
 		if ($this->_responseType === '\SplFileObject' || $this->_responseType === 'string') 
 		{ return [$http_body, $response_info['http_code'], $http_header]; }
 
-		$data = \json_decode( $http_body );
+		$data = \json_decode( $http_body, true );
 
 		// Cannot decode json, restore raw body
 		if ( \json_last_error() > 0 )
@@ -596,7 +605,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
-	 * @return void
+	 * @return Request
 	 */
 	protected function _noBody (
 		string $method,
@@ -614,7 +623,7 @@ class Request
 		{ $this->query($query); }
 
 		if ( !\is_null($headers) )
-		{ $this->headers($headers); }
+		{ $this->applyHeaders($headers); }
 
 		if ( !\is_null($responseType) )
 		{ $this->responseType($responseType); }
@@ -631,7 +640,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
-	 * @return void
+	 * @return Request
 	 * @throws ApiRequestException
 	 */
 	protected function _withBody (
@@ -651,7 +660,7 @@ class Request
 		{ $this->query($query); }
 
 		if ( !\is_null($headers) )
-		{ $this->headers($headers); }
+		{ $this->applyHeaders($headers); }
 
 		if ( !\is_null($responseType) )
 		{ $this->responseType($responseType); }

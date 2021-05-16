@@ -137,7 +137,33 @@ class HeaderBag
 		if ( !$this->has($key) )
 		{ return false; }
 
-		return \in_array($content, $this->get($key), true) !== false;
+		return \stripos(implode(', ', $this->get($key)), $content) !== false;
+	}
+
+	/**
+	 * Prepare $headers argument transforming appending
+	 * it to current headers object.
+	 *
+	 * @param HeaderBag|array|string $headers
+	 * @return HeaderBag
+	 */
+	public function apply ( $headers )
+	{
+		if ( $headers instanceof HeaderBag )
+		{ return $this->mergeWith($headers); }
+
+		if ( \is_array($headers) )
+		{ 
+			foreach ( $headers as $key => $content )
+			{ $this->append($key, $content); }
+
+			return $this;
+		}
+
+		if ( \is_string($headers) )
+		{ return $this->parseRaw($headers); }
+
+		throw new InvalidArgumentException('Unexpected headers, it must be one of: string, array or HeaderBag object.');
 	}
 
 	/**
@@ -170,28 +196,6 @@ class HeaderBag
 	{ return $this->_headers; }
 
 	/**
-	 * Parse $content to an array of contents.
-	 *
-	 * @param string|array $content
-	 * @return array
-	 */
-	private function parseContent ( $content ) : array
-	{
-		if ( !\is_string($content) && !\is_array($content) )
-		{ throw new InvalidArgumentException('Header content is expecting a string or an array value.'); }
-
-		if ( \is_array($content) )
-		{ return $content; }
-
-		return \array_map(
-			function ( $content ) {
-				return trim($content);
-			},
-			explode(',', $content)
-		); 
-	}
-
-	/**
 	 * Prepare $headers argument transforming it
 	 * to a HeaderBag object.
 	 *
@@ -220,8 +224,44 @@ class HeaderBag
 	 */
 	protected static function fromString ( string $raw ) : HeaderBag
 	{
-		$raw = explode('\n', $raw);
 		$headers = new HeaderBag();
+		return $headers->parseRaw($raw);
+	}
+
+	/**
+	 * Parse $content to an array of contents.
+	 *
+	 * @param string|array $content
+	 * @return array
+	 */
+	private function parseContent ( $content ) : array
+	{
+		if ( !\is_string($content) && !\is_array($content) )
+		{ throw new InvalidArgumentException('Header content is expecting a string or an array value.'); }
+
+		if ( \is_array($content) )
+		{ return $content; }
+
+		if ( $this->isJson($content) )
+		{ return [$content]; }
+
+		return \array_map(
+			function ( $content ) {
+				return trim($content);
+			},
+			explode(',', $content)
+		); 
+	}
+
+	/**
+	 * Parse raw headers string to headers.
+	 *
+	 * @param string $raw
+	 * @return HeaderBag
+	 */
+	private function parseRaw ( string $raw )
+	{
+		$raw = explode("\n", $raw);
 
 		foreach ( $raw as $header )
 		{
@@ -229,9 +269,31 @@ class HeaderBag
 			{ continue; }
 
 			$header  = explode(':', $header, 2);
-			$headers->append(\strtolower(trim($header[0])), trim($header[1]));
+			$this->append(trim($header[0]), trim($header[1]));
 		}
 
-		return $headers;
+		return $this;
+	}
+
+	/**
+	 * Check if $value is a json string.
+	 *
+	 * @param mixed $value
+	 * @return bool
+	 */
+	private function isJson ( $value ) 
+	{
+		if ( !\is_string( $value ) ) 
+		{ return false; }
+
+		if ( '{' != $value[0] && '[' != $value[0] ) 
+		{ return false; }
+
+		$json_data = json_decode($value, true);
+
+		if ( json_last_error() !== JSON_ERROR_NONE )
+		{ return false; }
+
+		return true;
 	}
 }

@@ -103,6 +103,15 @@ class HeaderBagTest extends TestCase
 		$this->assertTrue($headers->is('Accept','application/xhtml+xml'));
 	}
 
+	/** @test Expecting positive assertion. */
+	public function assertIfCanCheckIfHeaderHasContentNotStrict ()
+	{
+		$headers = new HeaderBag();
+		$headers->add('Accept', 'text/html, application/json; charset=utf-8');
+
+		$this->assertTrue($headers->is('Accept','application/json'));
+	}
+
 	/** @test Expecting negative assertion. */
 	public function assertIfCannotCheckIfHeaderHasContent ()
 	{
@@ -127,7 +136,7 @@ class HeaderBagTest extends TestCase
 	/** @test Expecting negative assertion. */
 	public function assertIfCanImportHeadersFromString ()
 	{
-		$raw = 'HTTP/1.x 200 OK\n
+		$raw = "HTTP/1.x 200 OK\n
 		Transfer-Encoding: chunked\n
 		Date: Sat, 28 Nov 2009 04:36:25 GMT\n
 		Server: LiteSpeed\n
@@ -135,13 +144,13 @@ class HeaderBagTest extends TestCase
 		X-Powered-By: W3 Total Cache/0.8\n
 		Pragma: public\n
 		Expires: Sat, 28 Nov 2009 05:36:25 GMT\n
-		Etag: "pub1259380237;gz"\n
+		Etag: \"pub1259380237;gz\"\n
 		Cache-Control: max-age=3600, public\n
 		Content-Type: text/html; charset=UTF-8\n
 		Last-Modified: Sat, 28 Nov 2009 03:50:37 GMT\n
 		X-Pingback: https://net.tutsplus.com/xmlrpc.php\n
 		Content-Encoding: gzip\n
-		Vary: Accept-Encoding, Cookie, User-Agent';
+		Vary: Accept-Encoding, Cookie, User-Agent";
 
 		$headers = HeaderBag::prepare($raw);
 
