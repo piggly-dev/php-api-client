@@ -3,17 +3,131 @@ namespace Piggy\ApiClient\Client;
 
 class ApiClient
 {
+	/**
+	 * PATCH HTTP request method.
+	 *
+	 * @var string
+	 */
+	public static $PATCH = 'PATCH';
+
+	/**
+	 * POST HTTP request method.
+	 *
+	 * @var string
+	 */
+	public static $POST = 'POST';
+
+	/**
+	 * GET HTTP request method.
+	 *
+	 * @var string
+	 */
+	public static $GET = 'GET';
+
+	/**
+	 * HEAD HTTP request method.
+	 *
+	 * @var string
+	 */
+	public static $HEAD = 'HEAD';
+
+	/**
+	 * OPTIONS HTTP request method.
+	 *
+	 * @var string
+	 */
+	public static $OPTIONS = 'OPTIONS';
+
+	/**
+	 * PUT HTTP request method.
+	 *
+	 * @var string
+	 */
+	public static $PUT = 'PUT';
+
+	/**
+	 * DELETE HTTP request method.
+	 *
+	 * @var string
+	 */
+	public static $DELETE = 'DELETE';
+
+	/**
+	 * Rest API config for this ApiClient.
+	 *
+	 * @var Configuration
+	 */
+	protected $config;
+
+	/**
+	 * Constructor to class
+	 *
+	 * @param Configuration $config Rest API config for this ApiClient.
+	 * @return void
+	 */
+	public function __construct (
+		Configuration $config = null
+	)
+	{
+		if ( $config === null ) 
+		{ $config = Configuration::getDefault(); }
+
+		$this->config = $config;
+	}
+
+	/**
+	 * Rest API config for this ApiClient.
+	 *
+	 * @return Configuration
+	 */
+	public function getConfig ()
+	{ return $this->config; }
+
+	/**
+	 * Prepare api key getting it by $identifier and addind
+	 * prefix to it if set.
+	 *
+	 * @param string $identifier ID to key. (authentication scheme)
+	 * @return string|null
+	 */
+	public function prepareApiKey ( string $identifier ) : ?string
+	{
+		list($prefix, $key) = $this->config->getApiKey($identifier);
+
+		if ( is_null($key) )
+		{ return null; }
+
+		if ( !is_null($prefix) )
+		{ return $prefix.' '.$key; }
+
+		return $key;
+	}
+
 	public function call (
 		string $resourcePath,
 		string $httpMethod,
 		array $queryParams,
-		array $postData,
-		array $headerParams,
+		array $postData = [],
+		array $headers = [],
 		string $responseType,
-		string $endpointPath
+		string $endpointPath,
+		bool $oAuth = false
 	)
 	{
-		$headers = [];
+		$uri = $this->config->getHost().'/'.ltrim($resourcePath, '/');
+
+		if ( $oAuth )
+		{ /** Implements oauth */ }
+		else
+		{ $headers = \array_merge($this->config->getHeaders(), $headers); }
+
+		$_headers = [];
+
+		// Normalize headers
+		foreach ( $headers as $key => $content )
+		{ $_headers[] = "$key: $content"; }
+
+		if ( $postData && in_array('Content-Type: application/x-www-form-urlencoded') )
 	}
 
 	/**

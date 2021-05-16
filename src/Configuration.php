@@ -85,13 +85,13 @@ class Configuration
 
 	/**
 	 * Get the API key by $identifier.
-	 * It will return an array with [$prefix, $key] or NULL.
+	 * It will return an array with [$prefix, $key] or [null, null].
 	 *
 	 * @param string $identifier ID to key. (authentication scheme)
-	 * @return array|null
+	 * @return array
 	 */
-	public function getApiKey ( string $identifier ) : ?array
-	{ return $this->_settings['api.keys'][$identifier]['key'] ?? null; }
+	public function getApiKey ( string $identifier ) : array
+	{ return $this->_settings['api.keys'][$identifier] ?? [null, null]; }
 
 	/**
 	 * Set the access token to OAuth scheme.
@@ -178,7 +178,7 @@ class Configuration
 	 * @return Configuration
 	 */
 	public function host ( string $host )
-	{ $this->_settings['http.host'] = $host; return $this; }
+	{ $this->_settings['http.host'] = trim($host,'/'); return $this; }
 
 	/**
 	 * Get the HTTP host.
