@@ -3,7 +3,7 @@ namespace Piggy\ApiClient\Exceptions;
 
 use Exception;
 use Monolog\Logger;
-use Piggy\ApiClient\Client\Configuration;
+use Piggy\ApiClient\Configuration;
 
 /**
  * An Api Exception which makes link to server response object,

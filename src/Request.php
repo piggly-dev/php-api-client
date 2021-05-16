@@ -1,12 +1,21 @@
 <?php
-namespace Piggy\ApiClient\Client;
+namespace Piggy\ApiClient;
 
-use CURLFile;
-use InvalidArgumentException;
+use Piggy\ApiClient\Configuration;
 use Piggy\ApiClient\Exceptions\ApiRequestException;
 use Piggy\ApiClient\Exceptions\ApiResponseException;
+use Piggy\ApiClient\Supports\HeaderBag;
 
-class ApiClient
+/**
+ * API request.
+ * 
+ * @category Class
+ * @package Piggly\ApiClient
+ * @subpackage Piggly\ApiClient
+ * @author Caique Araujo <caique@piggly.com.br>
+ * @author Piggly Lab <dev@piggly.com.br>
+ */
+class Request
 {
 	/**
 	 * PATCH HTTP request method.
@@ -58,7 +67,7 @@ class ApiClient
 	public static $DELETE = 'DELETE';
 
 	/**
-	 * Rest API config for this ApiClient.
+	 * Rest API config for this Request.
 	 *
 	 * @var Configuration
 	 */
@@ -107,16 +116,9 @@ class ApiClient
 	protected $_responseType = 'array';
 
 	/**
-	 * Is OAuth enabled?
-	 *
-	 * @var bool
-	 */
-	protected $_oAuth;
-
-	/**
 	 * Constructor to class
 	 *
-	 * @param Configuration $config Rest API config for this ApiClient.
+	 * @param Configuration $config Rest API config for this Request.
 	 * @return void
 	 */
 	public function __construct (
@@ -130,32 +132,12 @@ class ApiClient
 	}
 
 	/**
-	 * Rest API config for this ApiClient.
+	 * Rest API config for this Request.
 	 *
 	 * @return Configuration
 	 */
 	public function getConfig ()
 	{ return $this->config; }
-
-	/**
-	 * Prepare api key getting it by $identifier and addind
-	 * prefix to it if set.
-	 *
-	 * @param string $identifier ID to key. (authentication scheme)
-	 * @return string|null
-	 */
-	public function prepareApiKey ( string $identifier ) : ?string
-	{
-		list($prefix, $key) = $this->config->getApiKey($identifier);
-
-		if ( is_null($key) )
-		{ return null; }
-
-		if ( !is_null($prefix) )
-		{ return $prefix.' '.$key; }
-
-		return $key;
-	}
 
 	/**
 	 * Prepare a DELETE request.
@@ -290,16 +272,34 @@ class ApiClient
 	 * Set current HTTP headers.
 	 *
 	 * @param HeaderBag|array|string $headers
-	 * @return ApiClient
+	 * @return Request
 	 */
 	public function headers ( $headers )
 	{ $this->_headers = HeaderBag::prepare($headers); return $this; }
 
 	/**
+	 * Prepare Authorization header with api key $identifier
+	 * from configurations.
+	 *
+	 * @param string $identifier
+	 * @return Request
+	 */
+	public function authorization ( string $identifier )
+	{
+		$apiKey = $this->prepareApiKey($identifier);
+
+		if ( empty($apiKey) )
+		{ return $this; }
+
+		$this->config->headers()->add('Authorization', $apiKey);
+		return $this;
+	}
+
+	/**
 	 * Set current POST data.
 	 *
 	 * @param array|object $postData May be an array or object containing properties.
-	 * @return ApiClient
+	 * @return Request
 	 * @throws ApiRequestException
 	 */
 	public function data ( $postData )
@@ -325,7 +325,7 @@ class ApiClient
 	 *
 	 * @see https://www.php.net/manual/pt_BR/function.http-build-query
 	 * @param array|object $query May be an array or object containing properties.
-	 * @return ApiClient
+	 * @return Request
 	 * @throws ApiRequestException
 	 */
 	public function query ( $query )
@@ -349,7 +349,7 @@ class ApiClient
 	 * Must be one of: string, array or \SplFileObject.
 	 *
 	 * @param string $type
-	 * @return ApiClient
+	 * @return Request
 	 * @throws ApiRequestException
 	 */
 	public function responseType ( string $type )
@@ -368,15 +368,6 @@ class ApiClient
 		$this->_responseType = $type;
 		return $this;
 	}
-
-	/**
-	 * Set if oAuth is enabled or not.
-	 *
-	 * @param boolean $oAuth
-	 * @return ApiClient
-	 */
-	public function oAuth ( bool $oAuth )
-	{ $this->_oAuth = $oAuth; return $this; }
 
 	/**
 	 * Does an API call.
@@ -565,13 +556,21 @@ class ApiClient
 	 * use of request methods.
 	 *
 	 * @param string $httpMethod
-	 * @return ApiClient
-	 * @throws ApiException
+	 * @return Request
+	 * @throws ApiRequestException
 	 */
 	protected function method ( string $httpMethod )
 	{ 
 		if ( \in_array($httpMethod, [self::$DELETE, self::$GET, self::$HEAD, self::$OPTIONS, self::$PATCH, self::$POST, self::$PUT]) === false )
-		{ throw new ApiException(\sprintf('HTTP Method `%s` is not recognized', $httpMethod)); }
+		{ 
+			throw new ApiRequestException(
+				\sprintf('HTTP Method `%s` is not recognized', $httpMethod),
+				5,
+				$this->_method,
+				$this->getUri(),
+				$this->config
+			);
+		}
 
 		$this->_method = $httpMethod; 
 		return $this; 
@@ -584,7 +583,7 @@ class ApiClient
 	 * use of request methods.
 	 *
 	 * @param string $path
-	 * @return ApiClient
+	 * @return Request
 	 */
 	protected function path ( string $path )
 	{ $this->_path = ltrim($path, '/'); return $this; }
@@ -633,6 +632,7 @@ class ApiClient
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
 	 * @return void
+	 * @throws ApiRequestException
 	 */
 	protected function _withBody (
 		string $method,
@@ -657,7 +657,15 @@ class ApiClient
 		{ $this->responseType($responseType); }
 
 		if ( \is_null($data) )
-		{ throw new InvalidArgumentException(\sprintf('The HTTP method `%s` does not support a NULL body.', $this->_method)); }
+		{ 
+			throw new ApiRequestException(
+				\sprintf('The HTTP method `%s` does not support a NULL body.', $this->_method),
+				5,
+				$this->_method,
+				$this->getUri(),
+				$this->config
+			);
+		}
 
 		$this->data($data);
 
@@ -680,6 +688,26 @@ class ApiClient
 		{ return json_encode($postData); }
 
 		return $postData;
+	}
+
+	/**
+	 * Prepare api key getting it by $identifier and addind
+	 * prefix to it if set.
+	 *
+	 * @param string $identifier ID to key. (authentication scheme)
+	 * @return string|null
+	 */
+	protected function prepareApiKey ( string $identifier ) : ?string
+	{
+		list($prefix, $key) = $this->config->getApiKey($identifier);
+
+		if ( is_null($key) )
+		{ return null; }
+
+		if ( !is_null($prefix) )
+		{ return $prefix.' '.$key; }
+
+		return $key;
 	}
 	
 	/**

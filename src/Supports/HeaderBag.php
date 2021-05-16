@@ -1,8 +1,17 @@
 <?php
-namespace Piggy\ApiClient\Client;
+namespace Piggy\ApiClient\Supports;
 
 use InvalidArgumentException;
 
+/**
+ * Class to better manages HTTP headers.
+ * 
+ * @category Class
+ * @package Piggly\ApiClient
+ * @subpackage Piggly\ApiClient\Supports
+ * @author Caique Araujo <caique@piggly.com.br>
+ * @author Piggly Lab <dev@piggly.com.br>
+ */
 class HeaderBag
 {
 	/**
@@ -26,7 +35,10 @@ class HeaderBag
 	 * @return void
 	 */
 	public function __construct ( array $headers = [] )
-	{ $this->_headers = $headers; }
+	{ 
+		foreach ( $headers as $key => $content )
+		{ $this->add($key, $content); }
+	}
 
 	/**
 	 * Add a raw header. Adding it, will not be possible to
@@ -47,26 +59,39 @@ class HeaderBag
 	 * @throws InvalidArgumentException If $content is not string or array.
 	 */
 	public function add ( string $key, $content )
-	{ 
-		if ( !\is_string($content) && !\is_array($content) )
-		{ throw new InvalidArgumentException('Header content is expecting a string or an array value.'); }
+	{ $this->_headers[\strtolower($key)] = $this->parseContent($content); return $this; }
 
-		if ( \is_array($content) )
-		{ $content = implode(', ', $content); }
+	/**
+	 * Append $content to Header $key. If Header $key
+	 * does not exist, then creates it.
+	 *
+	 * @param string $key
+	 * @param string|array $content
+	 * @return HeaderBag
+	 * @throws InvalidArgumentException If $content is not string or array.
+	 */
+	public function append ( string $key, $content )
+	{
+		if ( !$this->has($key) )
+		{ return $this->add($key, $content); }
 
-		$this->_headers[$key] = $content; 
-		return $this; 
+		$this->_headers[\strtolower($key)] = \array_merge(
+			$this->get($key), 
+			$this->parseContent($content)
+		); 
+
+		return $this;
 	}
 
 	/**
-	 * Get the Header content.
+	 * Get the Header contents.
 	 *
 	 * @param string $key
 	 * @param mixed $default
-	 * @return mixed
+	 * @return array|mixed
 	 */
 	public function get ( string $key, $default = null )
-	{ return $this->_headers[$key] ?? $default; }
+	{ return $this->_headers[\strtolower($key)] ?? $default; }
 
 	/**
 	 * Remove the Header content.
@@ -75,10 +100,11 @@ class HeaderBag
 	 * @return HeaderBag
 	 */
 	public function remove ( string $key )
-	{ unset($this->_headers[$key]); return $this; }
+	{ unset($this->_headers[\strtolower($key)]); return $this; }
 
 	/**
 	 * Merge current headers to new ones.
+	 * Current headers may be replaced by $headers.
 	 *
 	 * @param HeaderBag|array|string $headers
 	 * @return HeaderBag
@@ -97,7 +123,7 @@ class HeaderBag
 	 * @return boolean
 	 */
 	public function has ( string $key ) : bool
-	{ return isset($this->_headers[$key]); }
+	{ return isset($this->_headers[\strtolower($key)]); }
 
 	/**
 	 * Check if $content is present at Header content.
@@ -111,7 +137,7 @@ class HeaderBag
 		if ( !$this->has($key) )
 		{ return false; }
 
-		return \stripos($this->get($key), $content) !== false;
+		return \in_array($content, $this->get($key), true) !== false;
 	}
 
 	/**
@@ -124,7 +150,10 @@ class HeaderBag
 		$headers = [];
 
 		foreach ( $this->_headers as $key => $content )
-		{ $headers[] = "$key: $content"; }
+		{ 
+			$content = \is_array($content) ? implode(', ', $content) : (string)$content;
+			$headers[] = "$key: $content"; 
+		}
 
 		foreach ( $this->_raws as $header )
 		{ $headers[] = $header; }
@@ -139,6 +168,28 @@ class HeaderBag
 	 */
 	public function all () : array
 	{ return $this->_headers; }
+
+	/**
+	 * Parse $content to an array of contents.
+	 *
+	 * @param string|array $content
+	 * @return array
+	 */
+	private function parseContent ( $content ) : array
+	{
+		if ( !\is_string($content) && !\is_array($content) )
+		{ throw new InvalidArgumentException('Header content is expecting a string or an array value.'); }
+
+		if ( \is_array($content) )
+		{ return $content; }
+
+		return \array_map(
+			function ( $content ) {
+				return trim($content);
+			},
+			explode(',', $content)
+		); 
+	}
 
 	/**
 	 * Prepare $headers argument transforming it
@@ -170,7 +221,7 @@ class HeaderBag
 	protected static function fromString ( string $raw ) : HeaderBag
 	{
 		$raw = explode('\n', $raw);
-		$headers = [];
+		$headers = new HeaderBag();
 
 		foreach ( $raw as $header )
 		{
@@ -178,18 +229,9 @@ class HeaderBag
 			{ continue; }
 
 			$header  = explode(':', $header, 2);
-			$key     = trim($header[0]);
-			$content = trim($header[1]);
-
-			if ( !isset($headers[$key]) )
-			{ $headers[$key] = $content; continue; }
-			
-			if ( \is_array($headers[$key]) )
-			{ $headers[$key] = \array_merge($headers[$key], [$content]); continue; }
-
-			$headers[$key] = \array_merge([ $headers[$key] ], [ $content ]);
+			$headers->append(\strtolower(trim($header[0])), trim($header[1]));
 		}
 
-		return new HeaderBag($headers);
+		return $headers;
 	}
 }

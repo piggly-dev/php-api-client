@@ -1,8 +1,9 @@
 <?php
-namespace Piggy\ApiClient\Client;
+namespace Piggy\ApiClient;
 
 use InvalidArgumentException;
 use Monolog\Logger;
+use Piggy\ApiClient\Supports\HeaderBag;
 
 /**
  * The master configuration to ApiClient object.
@@ -11,7 +12,7 @@ use Monolog\Logger;
  * 
  * @category Class
  * @package Piggly\ApiClient
- * @subpackage Piggly\ApiClient\Client
+ * @subpackage Piggly\ApiClient
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
@@ -19,10 +20,11 @@ class Configuration
 {
 	/**
 	 * Default timeout to HTTP connection.
+	 * 0 means there is not timeout.
 	 * 
 	 * @var int
 	 */
-	const DEFAULT_TIMEOUT = 60;
+	const DEFAULT_TIMEOUT = 0;
 
 	/**
 	 * Default configuration static object.
