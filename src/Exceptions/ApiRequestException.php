@@ -9,6 +9,7 @@ use Piggly\ApiClient\Configuration;
  * An Api Exception which makes link to server response object,
  * HTTP headers and body.
  * 
+ * @since 1.0.0
  * @category Class
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient\Client
@@ -20,12 +21,14 @@ class ApiRequestException extends Exception
 	/**
 	 * HTTP request method.
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected $_method;
 
 	/**
 	 * HTTP request uri.
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected $_uri;
 
@@ -37,6 +40,7 @@ class ApiRequestException extends Exception
 	 * @param string $method
 	 * @param string $uri
 	 * @param Configuration $config
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function __construct(
@@ -60,6 +64,7 @@ class ApiRequestException extends Exception
 	 * Get the HTTP method.
 	 *
 	 * @return mixed
+	 * @since 1.0.0
 	 */
 	public function getHTTPMethod ()
 	{ return $this->_method ?? null; }
@@ -68,6 +73,7 @@ class ApiRequestException extends Exception
 	 * Get the HTTP uri.
 	 *
 	 * @return mixed
+	 * @since 1.0.0
 	 */
 	public function getUri ()
 	{ return $this->_uri ?? null; }

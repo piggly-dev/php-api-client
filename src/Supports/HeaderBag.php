@@ -6,6 +6,7 @@ use InvalidArgumentException;
 /**
  * Class to better manages HTTP headers.
  * 
+ * @since 1.0.0
  * @category Class
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient\Supports
@@ -18,6 +19,7 @@ class HeaderBag
 	 * Headers.
 	 *
 	 * @var array
+	 * @since 1.0.0
 	 */
 	private $_headers = [];
 
@@ -25,6 +27,7 @@ class HeaderBag
 	 * Raws headers.
 	 *
 	 * @var array
+	 * @since 1.0.0
 	 */
 	private $_raws = [];
 
@@ -32,6 +35,7 @@ class HeaderBag
 	 * Constructor with default headers, including $key and $content.
 	 *
 	 * @param array $headers
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function __construct ( array $headers = [] )
@@ -45,6 +49,7 @@ class HeaderBag
 	 * use this class methods to manipulate it before.
 	 *
 	 * @param string $raw
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	public function raw ( string $raw )
@@ -55,6 +60,7 @@ class HeaderBag
 	 *
 	 * @param string $key
 	 * @param string|array $content
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 * @throws InvalidArgumentException If $content is not string or array.
 	 */
@@ -67,6 +73,7 @@ class HeaderBag
 	 *
 	 * @param string $key
 	 * @param string|array $content
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 * @throws InvalidArgumentException If $content is not string or array.
 	 */
@@ -88,6 +95,7 @@ class HeaderBag
 	 *
 	 * @param string $key
 	 * @param mixed $default
+	 * @since 1.0.0
 	 * @return array|mixed
 	 */
 	public function get ( string $key, $default = null )
@@ -97,6 +105,7 @@ class HeaderBag
 	 * Remove the Header content.
 	 *
 	 * @param string $key
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	public function remove ( string $key )
@@ -107,6 +116,7 @@ class HeaderBag
 	 * Current headers may be replaced by $headers.
 	 *
 	 * @param HeaderBag|array|string $headers
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	public function mergeWith ( $headers )
@@ -120,6 +130,7 @@ class HeaderBag
 	 * Check it has the Header $key.
 	 *
 	 * @param string $key
+	 * @since 1.0.0
 	 * @return boolean
 	 */
 	public function has ( string $key ) : bool
@@ -130,6 +141,7 @@ class HeaderBag
 	 *
 	 * @param string $key
 	 * @param string $content
+	 * @since 1.0.0
 	 * @return boolean
 	 */
 	public function is ( string $key, string $content ) : bool
@@ -145,6 +157,7 @@ class HeaderBag
 	 * it to current headers object.
 	 *
 	 * @param HeaderBag|array|string $headers
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	public function apply ( $headers )
@@ -169,6 +182,7 @@ class HeaderBag
 	/**
 	 * Prepare an array to CURLOPT_HTTPHEADER.
 	 *
+	 * @since 1.0.0
 	 * @return array
 	 */
 	public function cURL () : array
@@ -190,6 +204,7 @@ class HeaderBag
 	/**
 	 * Get all headers.
 	 *
+	 * @since 1.0.0
 	 * @return array
 	 */
 	public function all () : array
@@ -200,6 +215,7 @@ class HeaderBag
 	 * to a HeaderBag object.
 	 *
 	 * @param HeaderBag|array|string $headers
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	public static function prepare ( $headers ) : HeaderBag
@@ -220,6 +236,7 @@ class HeaderBag
 	 * Get headers from CURL headers $raw string
 	 *
 	 * @param string $raw
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	protected static function fromString ( string $raw ) : HeaderBag
@@ -232,6 +249,7 @@ class HeaderBag
 	 * Parse $content to an array of contents.
 	 *
 	 * @param string|array $content
+	 * @since 1.0.0
 	 * @return array
 	 */
 	private function parseContent ( $content ) : array
@@ -257,6 +275,7 @@ class HeaderBag
 	 * Parse raw headers string to headers.
 	 *
 	 * @param string $raw
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	private function parseRaw ( string $raw )
@@ -279,6 +298,7 @@ class HeaderBag
 	 * Check if $value is a json string.
 	 *
 	 * @param mixed $value
+	 * @since 1.0.0
 	 * @return bool
 	 */
 	private function isJson ( $value ) 

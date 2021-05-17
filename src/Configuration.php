@@ -10,6 +10,7 @@ use Piggly\ApiClient\Supports\HeaderBag;
  * This will prepare core settings to connect with
  * api HTTP host.
  * 
+ * @since 1.0.0
  * @category Class
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient
@@ -23,6 +24,7 @@ class Configuration
 	 * 0 means there is not timeout.
 	 * 
 	 * @var int
+	 * @since 1.0.0
 	 */
 	const DEFAULT_TIMEOUT = 0;
 
@@ -30,6 +32,7 @@ class Configuration
 	 * Default configuration static object.
 	 *
 	 * @var Configuration
+	 * @since 1.0.0
 	 */
 	private static $_default = null;
 
@@ -37,12 +40,14 @@ class Configuration
 	 * All settings.
 	 *
 	 * @var array
+	 * @since 1.0.0
 	 */
 	private $_settings;
 
 	/**
 	 * Constructor setting all settings data.
 	 * 
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function __construct ()
@@ -59,6 +64,7 @@ class Configuration
 	 *
 	 * @param string $key
 	 * @param mixed $value
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function custom (  string $key, $value )
@@ -69,6 +75,7 @@ class Configuration
 	 *
 	 * @param string $key
 	 * @param mixed $default
+	 * @since 1.0.0
 	 * @return mixed
 	 */
 	public function getCustom ( string $key, $default = null ) : ?array
@@ -80,6 +87,7 @@ class Configuration
 	 * @param string $identifier ID to key. (authentication scheme)
 	 * @param string $key API key.
 	 * @param string $prefix API key prefix. (e.g. Bearer)
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function apiKey ( string $identifier, string $key, string $prefix = null )
@@ -90,6 +98,7 @@ class Configuration
 	 * It will return an array with [$prefix, $key] or [null, null].
 	 *
 	 * @param string $identifier ID to key. (authentication scheme)
+	 * @since 1.0.0
 	 * @return array
 	 */
 	public function getApiKey ( string $identifier ) : array
@@ -99,6 +108,7 @@ class Configuration
 	 * Set the access token to OAuth scheme.
 	 *
 	 * @param string $accessToken
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function accessToken ( string $accessToken )
@@ -107,6 +117,7 @@ class Configuration
 	/**
 	 * Get the access token to OAuth scheme.
 	 *
+	 * @since 1.0.0
 	 * @return string|null
 	 */
 	public function getAccessToken () : ?string
@@ -116,6 +127,7 @@ class Configuration
 	 * Set username to HTTP Basic Authentication method.
 	 *
 	 * @param string $password
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function username ( string $username )
@@ -124,6 +136,7 @@ class Configuration
 	/**
 	 * Get the username to HTTP Basic Authentication method.
 	 *
+	 * @since 1.0.0
 	 * @return string|null
 	 */
 	public function getUsername () : ?string
@@ -133,6 +146,7 @@ class Configuration
 	 * Set password to HTTP Basic Authentication method.
 	 *
 	 * @param string $password
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function password ( string $password )
@@ -141,6 +155,7 @@ class Configuration
 	/**
 	 * Get the password to HTTP Basic Authentication method.
 	 *
+	 * @since 1.0.0
 	 * @return string|null
 	 */
 	public function getPassword () : ?string
@@ -149,6 +164,7 @@ class Configuration
 	/**
 	 * Access HTTP headers and manipulate them.
 	 *
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	public function headers () : HeaderBag
@@ -157,6 +173,7 @@ class Configuration
 	/**
 	 * Clone HTTP headers and manipulate them.
 	 *
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	public function cloneHeaders () : HeaderBag
@@ -165,6 +182,7 @@ class Configuration
 	/**
 	 * Set the HTTP host.
 	 *
+	 * @since 1.0.0
 	 * @param boolean $debug
 	 * @return Configuration
 	 */
@@ -174,6 +192,7 @@ class Configuration
 	/**
 	 * Get the HTTP host.
 	 *
+	 * @since 1.0.0
 	 * @return boolean
 	 */
 	public function getHost () : ?string
@@ -182,6 +201,7 @@ class Configuration
 	/**
 	 * Set the HTTP User Agent.
 	 *
+	 * @since 1.0.0
 	 * @param boolean $debug
 	 * @return Configuration
 	 */
@@ -191,6 +211,7 @@ class Configuration
 	/**
 	 * Get the HTTP User Agent.
 	 *
+	 * @since 1.0.0
 	 * @return boolean
 	 */
 	public function getUserAgent () : ?string
@@ -199,6 +220,7 @@ class Configuration
 	/**
 	 * Set the HTTP timeout in seconds.
 	 *
+	 * @since 1.0.0
 	 * @param boolean $seconds
 	 * @return Configuration
 	 * @throws InvalidArgumentException
@@ -214,6 +236,7 @@ class Configuration
 	/**
 	 * Get the HTTP timeout in seconds.
 	 *
+	 * @since 1.0.0
 	 * @return int
 	 */
 	public function getTimeout () : int
@@ -223,6 +246,7 @@ class Configuration
 	 * Set the HTTP connection timeout in seconds.
 	 *
 	 * @param boolean $seconds
+	 * @since 1.0.0
 	 * @return Configuration
 	 * @throws InvalidArgumentException
 	 */
@@ -237,6 +261,7 @@ class Configuration
 	/**
 	 * Get the HTTP connection timeout in seconds.
 	 *
+	 * @since 1.0.0
 	 * @return int
 	 */
 	public function getConnectionTimeout () : int
@@ -245,6 +270,7 @@ class Configuration
 	/**
 	 * Set the HTTP proxy host.
 	 *
+	 * @since 1.0.0
 	 * @param string $host
 	 * @return Configuration
 	 */
@@ -254,6 +280,7 @@ class Configuration
 	/**
 	 * Get the HTTP proxy host.
 	 *
+	 * @since 1.0.0
 	 * @return string
 	 */
 	public function getProxyHost () : ?string
@@ -263,6 +290,7 @@ class Configuration
 	 * Set the HTTP proxy port.
 	 *
 	 * @param int $port
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function proxyPort ( int $port ) 
@@ -271,6 +299,7 @@ class Configuration
 	/**
 	 * Get the HTTP proxy port.
 	 *
+	 * @since 1.0.0
 	 * @return int
 	 */
 	public function getProxyPort () : ?int
@@ -282,6 +311,7 @@ class Configuration
     *
     * @see https://secure.php.net/manual/en/function.curl-setopt.php
 	 * @param int $type
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function proxyType ( int $type ) 
@@ -290,6 +320,7 @@ class Configuration
 	/**
 	 * Get the HTTP proxy type.
 	 *
+	 * @since 1.0.0
 	 * @return int
 	 */
 	public function getProxyType () : ?int
@@ -299,6 +330,7 @@ class Configuration
 	 * Set the HTTP proxy user.
 	 *
 	 * @param string $user
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function proxyUser ( string $user ) 
@@ -307,6 +339,7 @@ class Configuration
 	/**
 	 * Get the HTTP proxy user.
 	 *
+	 * @since 1.0.0
 	 * @return string
 	 */
 	public function getProxyUser () : ?string
@@ -316,6 +349,7 @@ class Configuration
 	 * Set the HTTP proxy password.
 	 *
 	 * @param string $password
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function proxyPassword ( string $password ) 
@@ -324,6 +358,7 @@ class Configuration
 	/**
 	 * Get the HTTP proxy password.
 	 *
+	 * @since 1.0.0
 	 * @return string
 	 */
 	public function getProxyPassword () : ?string
@@ -333,6 +368,7 @@ class Configuration
 	 * Set the debug mode.
 	 *
 	 * @param boolean $debug
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function debug ( bool $debug )
@@ -342,6 +378,7 @@ class Configuration
 	 * Set up the application logger.
 	 *
 	 * @param Logger $logger
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function logger ( Logger $logger )
@@ -375,6 +412,7 @@ class Configuration
 	 *
 	 * @param string $path Absolute path to env files.
 	 * @param string $env
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function env ( string $path, string $env = null )
@@ -414,6 +452,7 @@ class Configuration
 	/**
 	 * Get current environment related to configuration.
 	 *
+	 * @since 1.0.0
 	 * @return string
 	 */
 	public function getEnv () : string
@@ -422,6 +461,7 @@ class Configuration
 	/**
 	 * Get if debug mode is enabled.
 	 *
+	 * @since 1.0.0
 	 * @return boolean
 	 */
 	public function isDebugging () : bool
@@ -430,6 +470,7 @@ class Configuration
 	/**
 	 * Get if logger is enabled.
 	 *
+	 * @since 1.0.0
 	 * @return boolean
 	 */
 	public function hasLogger () : bool
@@ -441,6 +482,7 @@ class Configuration
 	 * @param integer $level
 	 * @param string $message
 	 * @param array $context
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function log ( $level, $message, array $context = [] )
@@ -468,6 +510,7 @@ class Configuration
 	 * SSL certificate in developer environment.
 	 *
 	 * @param boolean $verify
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function verifySSL ( bool $verify )
@@ -476,6 +519,7 @@ class Configuration
 	/**
 	 * Get if should do a SSL verification.
 	 *
+	 * @since 1.0.0
 	 * @return boolean
 	 */
 	public function shouldVerifySSL () : bool
@@ -486,6 +530,7 @@ class Configuration
 	 * One for all instances.
 	 *
 	 * @param Configuration $config
+	 * @since 1.0.0
 	 * @return Configuration Default configuration
 	 */
 	public static function default ( Configuration $config ) : Configuration
@@ -495,6 +540,7 @@ class Configuration
 	 * Get static default object configuration.
 	 * One for all instances.
 	 *
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public static function getDefault () : Configuration
