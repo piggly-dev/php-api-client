@@ -9,6 +9,7 @@ use Piggly\ApiClient\Supports\HeaderBag;
 /**
  * API request.
  * 
+ * @since 1.0.0
  * @category Class
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient
@@ -21,6 +22,7 @@ class Request
 	 * PATCH HTTP request method.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	public static $PATCH = 'PATCH';
 
@@ -28,6 +30,7 @@ class Request
 	 * POST HTTP request method.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	public static $POST = 'POST';
 
@@ -35,6 +38,7 @@ class Request
 	 * GET HTTP request method.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	public static $GET = 'GET';
 
@@ -42,6 +46,7 @@ class Request
 	 * HEAD HTTP request method.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	public static $HEAD = 'HEAD';
 
@@ -49,6 +54,7 @@ class Request
 	 * OPTIONS HTTP request method.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	public static $OPTIONS = 'OPTIONS';
 
@@ -56,6 +62,7 @@ class Request
 	 * PUT HTTP request method.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	public static $PUT = 'PUT';
 
@@ -63,6 +70,7 @@ class Request
 	 * DELETE HTTP request method.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	public static $DELETE = 'DELETE';
 
@@ -70,6 +78,7 @@ class Request
 	 * Rest API config for this Request.
 	 *
 	 * @var Configuration
+	 * @since 1.0.0
 	 */
 	protected $config;
 
@@ -77,6 +86,7 @@ class Request
 	 * URL Path.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected $_path;
 
@@ -84,6 +94,7 @@ class Request
 	 * HTTP method.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected $_method;
 
@@ -91,6 +102,7 @@ class Request
 	 * Query parameters normalized.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected $_query;
 
@@ -98,6 +110,7 @@ class Request
 	 * Parameters to be replaced at uri.
 	 *
 	 * @var array
+	 * @since 1.0.0
 	 */
 	protected $_params;
 
@@ -105,6 +118,7 @@ class Request
 	 * Post data.
 	 *
 	 * @var array|object
+	 * @since 1.0.0
 	 */
 	protected $_data;
 
@@ -112,6 +126,7 @@ class Request
 	 * HTTP Headers.
 	 *
 	 * @var HeaderBag
+	 * @since 1.0.0
 	 */
 	protected $_headers;
 
@@ -119,6 +134,7 @@ class Request
 	 * Response type.
 	 *
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected $_responseType = 'array';
 
@@ -126,6 +142,7 @@ class Request
 	 * Constructor to class
 	 *
 	 * @param Configuration $config Rest API config for this Request.
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function __construct (
@@ -142,6 +159,7 @@ class Request
 	/**
 	 * Rest API config for this Request.
 	 *
+	 * @since 1.0.0
 	 * @return Configuration
 	 */
 	public function getConfig ()
@@ -155,6 +173,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function delete (
@@ -173,6 +192,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function head (
@@ -190,6 +210,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function get (
@@ -208,6 +229,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function options (
@@ -227,6 +249,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function patch (
@@ -246,6 +269,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function post (
@@ -265,6 +289,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function put (
@@ -279,6 +304,7 @@ class Request
 	/**
 	 * Get current HTTP headers.
 	 *
+	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
 	public function headers () : HeaderBag
@@ -288,6 +314,7 @@ class Request
 	 * Applies headers to current headers.
 	 *
 	 * @param HeaderBag|array|string $headers
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function applyHeaders ( $headers )
@@ -300,6 +327,7 @@ class Request
 	 * Username and password must be set in Configuration
 	 * object.
 	 *
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function basicAuth ()
@@ -318,6 +346,7 @@ class Request
 	 * Prepare Authorization header with api key $identifier.
 	 *
 	 * @param string $identifier
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function authorization ( string $identifier )
@@ -335,6 +364,7 @@ class Request
 	 * Set current POST data.
 	 *
 	 * @param array|object $postData May be an array or object containing properties.
+	 * @since 1.0.0
 	 * @return Request
 	 * @throws ApiRequestException
 	 */
@@ -359,6 +389,7 @@ class Request
 	 * URI params replacers.
 	 *
 	 * @param array $params
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	public function params ( array $params )
@@ -370,6 +401,7 @@ class Request
 	 *
 	 * @see https://www.php.net/manual/pt_BR/function.http-build-query
 	 * @param array|object $query May be an array or object containing properties.
+	 * @since 1.0.0
 	 * @return Request
 	 * @throws ApiRequestException
 	 */
@@ -394,6 +426,7 @@ class Request
 	 * Must be one of: string, array or \SplFileObject.
 	 *
 	 * @param string $type
+	 * @since 1.0.0
 	 * @return Request
 	 * @throws ApiRequestException
 	 */
@@ -417,6 +450,7 @@ class Request
 	/**
 	 * Does an API call.
 	 *
+	 * @since 1.0.0
 	 * @return array In format [$http_body, $http_code, $http_header].
     * @throws ApiRequestException something went wrong to request
     * @throws ApiResponseException on a non 2xx response
@@ -601,6 +635,7 @@ class Request
 	 * use of request methods.
 	 *
 	 * @param string $httpMethod
+	 * @since 1.0.0
 	 * @return Request
 	 * @throws ApiRequestException
 	 */
@@ -628,6 +663,7 @@ class Request
 	 * use of request methods.
 	 *
 	 * @param string $path
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	protected function path ( string $path )
@@ -641,6 +677,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
+	 * @since 1.0.0
 	 * @return Request
 	 */
 	protected function _noBody (
@@ -676,6 +713,7 @@ class Request
 	 * @param array|object $query
 	 * @param HeaderBag|array|string $headers
 	 * @param string $responseType
+	 * @since 1.0.0
 	 * @return Request
 	 * @throws ApiRequestException
 	 */
@@ -722,6 +760,7 @@ class Request
 	 *
 	 * @param HeaderBag $headers
 	 * @param array|object $postData
+	 * @since 1.0.0
 	 * @return string|array|object
 	 */
 	protected function preparePostData ( HeaderBag $headers, $postData )
@@ -740,6 +779,7 @@ class Request
 	 * prefix to it if set.
 	 *
 	 * @param string $identifier ID to key. (authentication scheme)
+	 * @since 1.0.0
 	 * @return string|null
 	 */
 	protected function prepareApiKey ( string $identifier ) : ?string
@@ -758,6 +798,7 @@ class Request
 	/**
 	 * Get current URI.
 	 *
+	 * @since 1.0.0
 	 * @return string
 	 */
 	protected function getUri () : string

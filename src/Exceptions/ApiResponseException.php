@@ -10,6 +10,7 @@ use Piggly\ApiClient\Supports\HeaderBag;
  * An Api Exception which makes link to server response object,
  * HTTP headers and body.
  * 
+ * @since 1.0.0
  * @category Class
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient\Client
@@ -21,12 +22,14 @@ class ApiResponseException extends Exception
 	/**
 	 * HTTP request method.
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected $_method;
 
 	/**
 	 * HTTP request uri.
 	 * @var string
+	 * @since 1.0.0
 	 */
 	protected $_uri;
 
@@ -35,6 +38,7 @@ class ApiResponseException extends Exception
 	 * either as JSON or string.
 	 *
 	 * @var mixed
+	 * @since 1.0.0
 	 */
 	protected $_body;
 
@@ -43,6 +47,7 @@ class ApiResponseException extends Exception
 	 * the server response.
 	 *
 	 * @var HeaderBag
+	 * @since 1.0.0
 	 */
 	protected $_headers;
 
@@ -50,6 +55,7 @@ class ApiResponseException extends Exception
 	 * The deserialized server response object.
 	 *
 	 * @var mixed
+	 * @since 1.0.0
 	 */
 	protected $_object;
 
@@ -63,6 +69,7 @@ class ApiResponseException extends Exception
 	 * @param string $method
 	 * @param string $uri
 	 * @param Configuration $config
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function __construct(
@@ -89,6 +96,7 @@ class ApiResponseException extends Exception
 	/**
 	 * Get the HTTP method.
 	 *
+	 * @since 1.0.0
 	 * @return mixed
 	 */
 	public function getHTTPMethod ()
@@ -97,6 +105,7 @@ class ApiResponseException extends Exception
 	/**
 	 * Get the HTTP uri.
 	 *
+	 * @since 1.0.0
 	 * @return mixed
 	 */
 	public function getUri ()
@@ -106,6 +115,7 @@ class ApiResponseException extends Exception
 	 * Get the HTTP body of the server response 
 	 * either as JSON or string.
 	 *
+	 * @since 1.0.0
 	 * @return mixed
 	 */
 	public function getResponseBody ()
@@ -115,6 +125,7 @@ class ApiResponseException extends Exception
 	 * All HTTP headers from
 	 * the server response.
 	 *
+	 * @since 1.0.0
 	 * @return HeaderBag|null
 	 */
 	public function getResponseHeaders () : ?HeaderBag
@@ -125,6 +136,7 @@ class ApiResponseException extends Exception
 	 * (during deserialization).
 	 *
 	 * @param mixed $response
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function setReponseObject ( $response )
@@ -133,6 +145,7 @@ class ApiResponseException extends Exception
 	/**
 	 * The deserialized server response object.
 	 *
+	 * @since 1.0.0
 	 * @return mixed
 	 */
 	public function getResponseObject ()

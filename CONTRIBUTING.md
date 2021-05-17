@@ -69,4 +69,21 @@ git commit -m "<message>"
 
 After your work is done, push `feature/<name>` to your origin repo, and make a pull request from it. 
 
+## Tests
+
+This library uses the PHPUnit. We carry out tests of all the main classes of this application.
+
+```bash
+vendor/bin/phpunit
+```
+
+You must always run tests with all PHP versions from 7.2 and greater.
+
+```bash
+php7.2 vendor/bin/phpunit
+php7.3 vendor/bin/phpunit
+php7.4 vendor/bin/phpunit
+php8.0 vendor/bin/phpunit
+```
+
 **Happy coding**!
