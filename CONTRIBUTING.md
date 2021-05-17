@@ -46,6 +46,44 @@ If the project maintainer has any additional requirements, you will find them li
 
 - **One pull request per feature** - If you want to do more than one thing, send multiple pull requests.
 
-- **Send coherent history** - Make sure each individual commit in your pull request is meaningful. If you had to make multiple intermediate commits while developing, please [squash them](https://www.git-scm.com/book/en/v2/Git-Tools-Rewriting-History#Changing-Multiple-Commit-Messages) before submitting.
+## How to?
+
+First, **fork** this repository. Then, at `develop` branch, create a new `feature` branch:
+
+```bash
+# -> Make sure you are at develop branch
+git checkout develop
+# <- Pull develop branch before create a new branch
+git pull origin develop
+# -> Create the new branch where <name> is a name which identifies your branch
+git checkout -b feature/<name>
+```
+
+In the `feature/<name>` branch you can make many `commits` as you need:
+
+```bash
+# == To things work great, always do commits, never mind about them, just organize yourself
+git add -A
+git commit -m "<message>"
+```
+
+After your work is done, push `feature/<name>` to your origin repo, and make a pull request from it. 
+
+## Tests
+
+This library uses the PHPUnit. We carry out tests of all the main classes of this application.
+
+```bash
+vendor/bin/phpunit
+```
+
+You must always run tests with all PHP versions from 7.2 and greater.
+
+```bash
+php7.2 vendor/bin/phpunit
+php7.3 vendor/bin/phpunit
+php7.4 vendor/bin/phpunit
+php8.0 vendor/bin/phpunit
+```
 
 **Happy coding**!
