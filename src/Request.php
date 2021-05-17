@@ -95,6 +95,13 @@ class Request
 	protected $_query;
 
 	/**
+	 * Parameters to be replaced at uri.
+	 *
+	 * @var array
+	 */
+	protected $_params;
+
+	/**
 	 * Post data.
 	 *
 	 * @var array|object
@@ -287,8 +294,28 @@ class Request
 	{ $this->_headers->apply($headers); return $this; }
 
 	/**
-	 * Prepare Authorization header with api key $identifier
-	 * from configurations.
+	 * Prepare Authorization header with Basic credentials
+	 * with following: base64_encode( $username : $password ).
+	 * 
+	 * Username and password must be set in Configuration
+	 * object.
+	 *
+	 * @return Request
+	 */
+	public function basicAuth ()
+	{
+		$this->_headers->add(
+			'Authorization', 
+			'Basic '.\base64_encode(
+				$this->config->getUsername().':'.$this->config->getPassword()
+			)
+		);
+
+		return $this;
+	}
+
+	/**
+	 * Prepare Authorization header with api key $identifier.
 	 *
 	 * @param string $identifier
 	 * @return Request
@@ -300,7 +327,7 @@ class Request
 		if ( empty($apiKey) )
 		{ return $this; }
 
-		$this->config->headers()->add('Authorization', $apiKey);
+		$this->_headers->add('Authorization', $apiKey);
 		return $this;
 	}
 
@@ -327,6 +354,15 @@ class Request
 		$this->_data = $postData; 
 		return $this; 
 	}
+
+	/**
+	 * URI params replacers.
+	 *
+	 * @param array $params
+	 * @return Request
+	 */
+	public function params ( array $params )
+	{ $this->_params = $params; return $this; }
 
 	/**
 	 * Set URL query parameters. It uses the http_build_query()
@@ -730,6 +766,12 @@ class Request
 
 		if ( !empty($this->_query) )
 		{ return \sprintf('%s?%s', $uri, $this->_query); }
+
+		if ( !empty($this->_params) )
+		{
+			foreach ( $this->_params as $key => $value )
+			{ $uri = \str_replace(\sprintf('{%s}',$key), (string)$value, $uri); }
+		}
 
 		return $uri;
 	}
