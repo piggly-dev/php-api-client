@@ -1,6 +1,6 @@
 # Api Client Starter-Kit
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/piggly/php-php-api-client.svg?style=flat-square)](https://packagist.org/packages/piggly/php-api-client) [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE) 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/piggly/php-api-client.svg?style=flat-square)](https://packagist.org/packages/piggly/php-api-client) [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE) 
 
 This open-source library is provided for cases where you need to do APIs calls with large flexibility that officials SDK may not provide out-of-the-box. When using this Starter-Kit, you will be able to make better cURL requests with a smart managing of requests and responses.
 
