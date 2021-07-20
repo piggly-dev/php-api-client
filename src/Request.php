@@ -594,7 +594,7 @@ class Request
 		// Invalid response
 		if ( $response_info['http_code'] < 200 || $response_info['http_code'] >= 300 )
 		{
-			$data = \json_decode( $http_body );
+			$data = \json_decode( $http_body, true );
 
 			// Cannot decode json, restore raw body
 			if ( \json_last_error() > 0 )
