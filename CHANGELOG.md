@@ -11,3 +11,7 @@
 ## `1.0.2` at `2021-05-29`
 
 * Fix response error at `Request::call()` method.
+
+## `1.0.3` at `2021-07-19`
+
+* Allow `null` headers at `ApiResponseException`.
