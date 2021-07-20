@@ -84,7 +84,7 @@ class ApiResponseException extends Exception
 	{
 		parent::__construct($message, $code);
 
-		$this->_headers = HeaderBag::prepare($headers);
+		$this->_headers = !is_null($headers) ? HeaderBag::prepare($headers) : null;
 		$this->_body = $body;
 		$this->_method = $method;
 		$this->_uri = $uri;
