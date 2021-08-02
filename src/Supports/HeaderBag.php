@@ -299,11 +299,12 @@ class HeaderBag
 	 *
 	 * @param mixed $value
 	 * @since 1.0.0
+	 * @since 1.0.4 Not json when empty
 	 * @return bool
 	 */
 	private function isJson ( $value ) 
 	{
-		if ( !\is_string( $value ) ) 
+		if ( !\is_string( $value ) || empty($value) ) 
 		{ return false; }
 
 		if ( '{' != $value[0] && '[' != $value[0] ) 
