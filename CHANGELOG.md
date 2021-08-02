@@ -15,3 +15,7 @@
 ## `1.0.3` at `2021-07-19`
 
 * Allow `null` headers at `ApiResponseException`.
+
+## `1.0.4` at `2021-08-02`
+
+* [FIX] Header bag is not JSON when $content is empty.
