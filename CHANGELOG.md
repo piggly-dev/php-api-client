@@ -19,3 +19,7 @@
 ## `1.0.4` at `2021-08-02`
 
 * [FIX] Header bag is not JSON when $content is empty.
+
+## `1.0.5` at `2021-08-04`
+
+* [FIX] Allowing post data as string.

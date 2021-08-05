@@ -363,24 +363,14 @@ class Request
 	/**
 	 * Set current POST data.
 	 *
-	 * @param array|object $postData May be an array or object containing properties.
+	 * @param mixed $postData May be an array or object containing properties.
 	 * @since 1.0.0
+	 * @since 1.0.5 Allow any $postData format.
 	 * @return Request
 	 * @throws ApiRequestException
 	 */
 	public function data ( $postData )
 	{ 
-		if ( !\is_object($postData) && !\is_array($postData) )
-		{ 
-			throw new ApiRequestException(
-				'Post data must be an array or an object containing properties.',
-				5,
-				$this->_method,
-				$this->getUri(),
-				$this->config
-			); 
-		}
-
 		$this->_data = $postData; 
 		return $this; 
 	}
@@ -759,8 +749,9 @@ class Request
 	 * Prepare post data according with Content-Type header.
 	 *
 	 * @param HeaderBag $headers
-	 * @param array|object $postData
+	 * @param mixed $postData
 	 * @since 1.0.0
+	 * @since 1.0.5 Parse body data to string.
 	 * @return string|array|object
 	 */
 	protected function preparePostData ( HeaderBag $headers, $postData )
@@ -771,7 +762,7 @@ class Request
 		if ( (\is_object($postData) || \is_array($postData)) && !$headers->is('content-type', 'multipart/form-data') )
 		{ return json_encode($postData); }
 
-		return $postData;
+		return \strval($postData);
 	}
 
 	/**
