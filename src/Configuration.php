@@ -55,9 +55,32 @@ class Configuration
 		$this->_settings = [
 			'api.keys' => [],
 			'http.headers' => new HeaderBag(),
-			'custom' => []
+			'custom' => [],
+			'curl' => []
 		];
 	}
+
+	/**
+	 * Set custom configuration by $option.
+	 *
+	 * @param int $option
+	 * @param mixed $value
+	 * @since 1.0.6
+	 * @return Configuration
+	 */
+	public function curlModifier ( int $option, $value )
+	{ $this->_settings['curl'][$option] = $value; return $this; }
+
+	/**
+	 * Get all curl modifiers.
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 * @since 1.0.0
+	 * @return mixed
+	 */
+	public function getCurlModifiers () : ?array
+	{ return $this->_settings['curl'] ?? []; }
 
 	/**
 	 * Set custom configuration by $key.
@@ -76,9 +99,10 @@ class Configuration
 	 * @param string $key
 	 * @param mixed $default
 	 * @since 1.0.0
+	 * @since 1.0.6 Return mixed values.
 	 * @return mixed
 	 */
-	public function getCustom ( string $key, $default = null ) : ?array
+	public function getCustom ( string $key, $default = null )
 	{ return $this->_settings['custom'][$key] ?? $default; }
 
 	/**
