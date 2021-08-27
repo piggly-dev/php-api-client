@@ -23,3 +23,7 @@
 ## `1.0.5` at `2021-08-04`
 
 * [FIX] Allowing post data as string.
+
+## `1.0.6` at `2021-08-26`
+
+* [ADD] Custom cURL options with client configuration.
