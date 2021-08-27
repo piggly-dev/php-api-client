@@ -27,3 +27,8 @@
 ## `1.0.6` at `2021-08-26`
 
 * [ADD] Custom cURL options with client configuration.
+
+## `1.0.7` at `2021-08-26`
+
+* [FIX] Convert body to string when throwing an `ApiResponseException`.
+* [ADD] Method to throw an `ApiResponseException` with some default request data.
