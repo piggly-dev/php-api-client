@@ -442,6 +442,7 @@ class Request
 	 *
 	 * @since 1.0.0
 	 * @since 1.0.6 Apply all curl modifiers.
+	 * @since 1.0.7 Fixed error when throw exception with array as body
 	 * @return array In format [$http_body, $http_code, $http_header].
     * @throws ApiRequestException something went wrong to request
     * @throws ApiResponseException on a non 2xx response
@@ -601,7 +602,7 @@ class Request
 				\sprintf(
 					'Error while requesting server, received a non successful HTTP code `%s` with response body: %s.',
 					$response_info['http_code'],
-					\is_object($data) ? serialize($data) : $data
+					\is_object($data) ? serialize($data) : (\is_array($data) ? \json_encode($data) : \strval($data))
 				),
 				$response_info['http_code'],
 				$http_header,
@@ -813,5 +814,28 @@ class Request
 		}
 
 		return $uri;
+	}
+
+	/**
+	 * Throw an ApiResponseException.
+	 *
+	 * @param string $message
+	 * @since 1.0.7
+	 * @return void
+	 * @throws ApiResponseException
+	 */
+	public function throwResponseException (
+		string $message
+	)
+	{
+		throw new ApiResponseException(
+			$message,
+			0,
+			null,
+			null,
+			$this->_method,
+			$this->getUri(),
+			$this->config
+		);
 	}
 }
