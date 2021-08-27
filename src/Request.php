@@ -441,6 +441,7 @@ class Request
 	 * Does an API call.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.6 Apply all curl modifiers.
 	 * @return array In format [$http_body, $http_code, $http_header].
     * @throws ApiRequestException something went wrong to request
     * @throws ApiResponseException on a non 2xx response
@@ -544,10 +545,16 @@ class Request
 		// Get HTTP response headers
 		\curl_setopt($cURL, \CURLOPT_HEADER, 1);
 
+		// Apply all cURL modifiers
+		$modifiers = $this->config->getCurlModifiers();
+
+		foreach ( $modifiers as $option => $value )
+		{ \curl_setopt($cURL, $option, $value); }
+
 		// Make the request
 		$response = \curl_exec($cURL);
 		// Header size
-		$http_header_size = \curl_getinfo($cURL, CURLINFO_HEADER_SIZE);
+		$http_header_size = \curl_getinfo($cURL, \CURLINFO_HEADER_SIZE);
 
 		/** @var HeaderBag $http_header Extract headers. */
 		$http_header = HeaderBag::prepare(\substr($response, 0, $http_header_size));

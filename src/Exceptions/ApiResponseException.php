@@ -70,6 +70,7 @@ class ApiResponseException extends Exception
 	 * @param string $uri
 	 * @param Configuration $config
 	 * @since 1.0.0
+	 * @since 1.0.6 Fixed to response error at log data
 	 * @return void
 	 */
 	public function __construct(
@@ -90,7 +91,7 @@ class ApiResponseException extends Exception
 		$this->_uri = $uri;
 
 		if ( $config instanceof Configuration )
-		{ $config->log(Logger::ERROR, 'api.request.error -> '.$message, ['method' => $this->_method, 'uri' => $this->_uri]); }
+		{ $config->log(Logger::ERROR, 'api.response.error -> '.$message, ['method' => $this->_method, 'uri' => $this->_uri]); }
 	}
 
 	/**
