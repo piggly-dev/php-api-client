@@ -386,6 +386,16 @@ class Request
 	{ $this->_params = $params; return $this; }
 
 	/**
+	 * Add URI params replacers.
+	 *
+	 * @param array $params
+	 * @since 1.0.8
+	 * @return Request
+	 */
+	public function addParams ( array $params )
+	{ $this->_params = \array_merge($this->_params ?? [], $params); return $this; }
+
+	/**
 	 * Set URL query parameters. It uses the http_build_query()
 	 * PHP function.
 	 *
@@ -409,6 +419,37 @@ class Request
 		}
 
 		$this->_query = \http_build_query($query); return $this; 
+	}
+
+	/**
+	 * Add URL query parameters. It uses the http_build_query()
+	 * PHP function.
+	 *
+	 * @see https://www.php.net/manual/pt_BR/function.http-build-query
+	 * @param array|object $query May be an array or object containing properties.
+	 * @since 1.0.8
+	 * @return Request
+	 * @throws ApiRequestException
+	 */
+	public function addQuery ( $query )
+	{ 
+		if ( !\is_object($query) && !\is_array($query) )
+		{ 
+			throw new ApiRequestException(
+				'Query parameters must be an array or an object containing properties.',
+				5,
+				$this->_method,
+				$this->getUri(),
+				$this->config
+			); 
+		}
+
+		if ( !empty($this->_query) )
+		{ $this->_query .= '&'.\http_build_query($query); }
+		else 
+		{ $this->_query = \http_build_query($query); }
+
+		return $this; 
 	}
 
 	/**
@@ -805,7 +846,7 @@ class Request
 		$uri = $this->config->getHost().'/'.($this->_path ?? ''); 
 
 		if ( !empty($this->_query) )
-		{ return \sprintf('%s?%s', $uri, $this->_query); }
+		{ $uri = \sprintf('%s?%s', $uri, $this->_query); }
 
 		if ( !empty($this->_params) )
 		{
