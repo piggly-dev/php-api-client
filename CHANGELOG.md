@@ -32,3 +32,8 @@
 
 * [FIX] Convert body to string when throwing an `ApiResponseException`.
 * [ADD] Method to throw an `ApiResponseException` with some default request data.
+
+## `1.0.8` at `2022-03-27`
+
+* [ADD] Methods to add queries and parameter.
+* [FIX] Fix URI builder on Request class.
