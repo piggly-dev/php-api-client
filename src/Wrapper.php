@@ -12,7 +12,7 @@ use RuntimeException;
  * If API has the /movies endpoint, create moviesApi()
  * returning the endpoint object.
  * 
- * @since 1.0.8
+ * @since 1.0.9
  * @category API
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient
@@ -24,7 +24,7 @@ abstract class Wrapper
 	/**
 	 * Application settings.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @var ApplicationModel
 	 */
 	protected $_app;
@@ -32,7 +32,7 @@ abstract class Wrapper
 	/**
 	 * Client configuration.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @var Configuration
 	 */
 	protected $_client;
@@ -43,7 +43,7 @@ abstract class Wrapper
 	 *
 	 * @param ApplicationModel $app
 	 * @param Logger|null $logger
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return void
 	 * @throws RuntimeException
 	 */
@@ -72,7 +72,7 @@ abstract class Wrapper
 	 * Get an endpoint by name.
 	 *
 	 * @param string $name
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return Endpoint
 	 */
 	public function endpoint (string $name) {
@@ -89,7 +89,7 @@ abstract class Wrapper
 	/**
 	 * Get application.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return ApplicationModel
 	 */
 	public function getApp(): ApplicationModel
@@ -100,7 +100,7 @@ abstract class Wrapper
 	/**
 	 * Get client configuration.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return Configuration
 	 */
 	public function getConfig(): Configuration
@@ -115,7 +115,7 @@ abstract class Wrapper
 	 * 
 	 * [ 'movies' => \Api\Movies::class ];
 	 * 
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return array
 	 */
 	abstract public static function endpointClasses () : array;

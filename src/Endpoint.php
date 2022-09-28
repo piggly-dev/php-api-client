@@ -4,7 +4,7 @@ namespace Piggly\ApiClient;
 /**
  * API endpoint associated to the wrapper.
  * 
- * @since 1.0.8
+ * @since 1.0.9
  * @category API
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient
@@ -17,7 +17,7 @@ abstract class Endpoint
 	 * Endpoint request object.
 	 *
 	 * @var Request
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 */
 	protected $_request;
 
@@ -25,7 +25,7 @@ abstract class Endpoint
 	 * API wrapper.
 	 *
 	 * @var Wrapper
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 */
 	protected $_api;
 
@@ -33,7 +33,7 @@ abstract class Endpoint
 	 * Constructor with $api.
 	 *
 	 * @param Wrapper $api
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return self
 	 */
 	public function __construct(Wrapper $api)
@@ -45,7 +45,7 @@ abstract class Endpoint
 	/**
 	 * Get current request client.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return Request
 	 */
 	public function request(): Request

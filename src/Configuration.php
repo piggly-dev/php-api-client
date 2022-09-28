@@ -552,7 +552,7 @@ class Configuration
 	/**
 	 * Clone current object.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return Configuration
 	 */
 	public function clone () :Configuration {

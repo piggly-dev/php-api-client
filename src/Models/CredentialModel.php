@@ -15,7 +15,7 @@ use RuntimeException;
  * expires_on
  * expires_in
  * 
- * @since 1.0.8
+ * @since 1.0.9
  * @category Interfaces
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient\Interfaces
@@ -28,7 +28,7 @@ class CredentialModel extends AbstractModel
 	 * Bearer token type.
 	 * 
 	 * @var string
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 */
 	const TOKEN_TYPE_BEARER = 'Bearer';
 
@@ -36,7 +36,7 @@ class CredentialModel extends AbstractModel
 	 * Mutate scope string to an array.
 	 *
 	 * @param string|array $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return array
 	 * @throws RuntimeException
 	 */
@@ -55,7 +55,7 @@ class CredentialModel extends AbstractModel
 	 * Mutate consented on date to DateTimeImmutable.
 	 *
 	 * @param string|integer|DateTimeImmutable $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return DateTimeImmutable
 	 */
 	protected function mutate_consented_on ($value) {
@@ -72,7 +72,7 @@ class CredentialModel extends AbstractModel
 	 * Mutate expires on date to DateTimeImmutable.
 	 *
 	 * @param string|integer|DateTimeImmutable $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return DateTimeImmutable
 	 */
 	protected function mutate_expires_on ($value) {
@@ -89,7 +89,7 @@ class CredentialModel extends AbstractModel
 	 * Mutate expires on date to DateTimeImmutable.
 	 *
 	 * @param integer $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return integer
 	 */
 	protected function mutate_expires_in ($value) {
@@ -104,7 +104,7 @@ class CredentialModel extends AbstractModel
 	 * Mutate timezone to DateTimeZone.
 	 *
 	 * @param string|DateTimeZone $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return DateTimeZone
 	 */
 	protected function mutate_timezone ($value) {
@@ -121,7 +121,7 @@ class CredentialModel extends AbstractModel
 	 * Parse DateTimeImmutable, string or integer to DateTimeImmutable.
 	 *
 	 * @param mixed $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return DateTimeImmutable|null
 	 */
 	protected function parse_date ($value) : ?DateTimeImmutable {
@@ -139,7 +139,7 @@ class CredentialModel extends AbstractModel
 	/**
 	 * Return if credential has expired.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return boolean
 	 */
 	public function isExpired () : bool {
@@ -154,7 +154,7 @@ class CredentialModel extends AbstractModel
 	/**
 	 * Export object data to an array.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return array
 	 */
 	public function export(): array
@@ -173,7 +173,7 @@ class CredentialModel extends AbstractModel
 	 * Create a new credential model with data.
 	 *
 	 * @param array $data
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return self
 	 */
 	public static function import(array $data)
