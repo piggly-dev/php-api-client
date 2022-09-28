@@ -1,6 +1,7 @@
 <?php
 namespace Piggly\ApiClient\Models;
 
+use Piggly\ApiClient\Interfaces\EnvInterface;
 use RuntimeException;
 
 /**
@@ -20,12 +21,12 @@ use RuntimeException;
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
-class ApplicationModel extends AbstractModel
+abstract class ApplicationModel extends AbstractModel
 {
 	/**
 	 * Test enviroment.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.8
 	 * @var string
 	 */
 	public const ENV_TEST = 'test';
@@ -33,7 +34,7 @@ class ApplicationModel extends AbstractModel
 	/**
 	 * Sandbox/homologation enviroment.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.8
 	 * @var string
 	 */
 	public const ENV_HOMOL = 'homol';
@@ -41,7 +42,7 @@ class ApplicationModel extends AbstractModel
 	/**
 	 * Production enviroment.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.8
 	 * @var string
 	 */
 	public const ENV_PRODUCTION = 'prod';
@@ -134,6 +135,37 @@ class ApplicationModel extends AbstractModel
 
 		return !$this->get('credential')->isExpired();
 	}
+
+	/**
+	 * Return if application is debugging.
+	 *
+	 * @since 1.0.8
+	 * @return boolean
+	 */
+	public function isDebugging ():bool {
+		return $this->get('debug_mode', false);
+	}
+
+	/**
+	 * Check if current env is equal to $expected.
+	 *
+	 * @param string $expected
+	 * @since 1.0.8
+	 * @return boolean
+	 */
+	public function isEnv(string $expected): bool
+	{
+		return $this->get('environment') === $expected;
+	}
+
+	/**
+	 * Must return the enviroment object according to
+	 * the current enviroment.
+	 *
+	 * @since 1.0.8
+	 * @return EnvInterface
+	 */
+	abstract public function createEnviroment(): EnvInterface;
 
 	/**
 	 * Export object data to an array.

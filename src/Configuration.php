@@ -550,6 +550,19 @@ class Configuration
 	{ return $this->_settings['http.ssl'] ?? false; }
 
 	/**
+	 * Clone current object.
+	 *
+	 * @since 1.0.8
+	 * @return Configuration
+	 */
+	public function clone () :Configuration {
+		$conf = new Configuration();
+		$conf->_settings = $this->_settings;
+
+		return $conf;
+	}
+
+	/**
 	 * Set static default object configuration.
 	 * One for all instances.
 	 *
