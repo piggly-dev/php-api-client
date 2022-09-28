@@ -181,11 +181,11 @@ class CredentialModel extends AbstractModel
 	 */
 	public static function import(array $data)
 	{
-		$m = new CredentialModel();
+		$m = new static();
 
 		$m->set('token_type', $data['token_type'] ?? static::TOKEN_TYPE_BEARER);
 		$m->set('access_token', $data['access_token'] ?? null);
-		$m->set('scope', $data['scope'] ?? null);
+		$m->set('scope', $data['scope'] ?? []);
 		$m->set('timezone', $data['timezone'] ?? new DateTimeZone('UTC'));
 
 		if ( !empty($data['consented_on']) ) $m->set('consented_on', $data['consented_on']);
