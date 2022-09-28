@@ -155,6 +155,7 @@ class CredentialModel extends AbstractModel
 	 * Export object data to an array.
 	 *
 	 * @since 1.0.9
+	 * @since 1.0.10 timezone export
 	 * @return array
 	 */
 	public function export(): array
@@ -163,6 +164,7 @@ class CredentialModel extends AbstractModel
 			'token_type' => $this->get('token_type', static::TOKEN_TYPE_BEARER),
 			'access_token' => $this->get('access_token'),
 			'scope' => $this->get('scope'),
+			'timezone' => $this->has('timezone') ? $this->get('timezone')->getName() : 'UTC',
 			'consented_on' => $this->has('consented_on') ? $this->get('consented_on')->getTimestamp() : null,
 			'expires_on' => $this->has('expires_on') ? $this->get('expires_on')->getTimestamp() : null,
 			'expires_in' => $this->get('expires_in'),
@@ -174,6 +176,7 @@ class CredentialModel extends AbstractModel
 	 *
 	 * @param array $data
 	 * @since 1.0.9
+	 * @since 1.0.10 expired_on to expires_on, timezone import
 	 * @return self
 	 */
 	public static function import(array $data)
@@ -183,9 +186,10 @@ class CredentialModel extends AbstractModel
 		$m->set('token_type', $data['token_type'] ?? static::TOKEN_TYPE_BEARER);
 		$m->set('access_token', $data['access_token'] ?? null);
 		$m->set('scope', $data['scope'] ?? null);
+		$m->set('timezone', $data['timezone'] ?? new DateTimeZone('UTC'));
 
 		if ( !empty($data['consented_on']) ) $m->set('consented_on', $data['consented_on']);
-		if ( !empty($data['expired_on']) ) $m->set('expired_on', $data['expired_on']);
+		if ( !empty($data['expires_on']) ) $m->set('expires_on', $data['expires_on']);
 		if ( !empty($data['expires_in']) ) $m->set('expires_in', $data['expires_in']);
 
 		return $m;
