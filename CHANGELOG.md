@@ -44,3 +44,7 @@
 * [ADD] Abstract classes for API wrapper and API endpoints;
 * [ADD] Clone method to `Configuration`;
 * [ADD] Enviroment interface to manipulate client configuration.
+
+## `1.0.10` at `2022-09-28`
+
+* [FIX] Invalid field name and timezone implementation at `CredentialModel`.

@@ -136,6 +136,7 @@ class ApplicationModelTest extends TestCase
 			'token_type' => 'Bearer',
 			'access_token' => 'jwt',
 			'scope' => ['read', 'write'],
+			'timezone' => 'UTC',
 			'consented_on' => 1662001200,
 			'expires_on' => 1662001200+300,
 			'expires_in' => 300,
