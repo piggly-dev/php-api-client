@@ -2,6 +2,7 @@
 namespace Piggly\ApiClient\Models;
 
 use DateTimeImmutable;
+use DateTimeZone;
 use RuntimeException;
 
 /**
@@ -58,15 +59,13 @@ class CredentialModel extends AbstractModel
 	 * @return DateTimeImmutable
 	 */
 	protected function mutate_consented_on ($value) {
-		if ($value instanceof DateTimeImmutable) {
-			return $value;
-		} elseif (\is_string($value)) {
-			return new DateTimeImmutable($value);
-		} elseif (\is_integer($value)) {
-			return new DateTimeImmutable('@'.$value);
-		}
+		$value = $this->parse_date($value);
 
-		throw new RuntimeException('Invalid consented_on date value.');
+		if (empty($value)) {
+			throw new RuntimeException('Invalid consented_on date value.');
+		}
+		
+		return $value;
 	}
 
 	/**
@@ -77,15 +76,13 @@ class CredentialModel extends AbstractModel
 	 * @return DateTimeImmutable
 	 */
 	protected function mutate_expires_on ($value) {
-		if ($value instanceof DateTimeImmutable) {
-			return $value;
-		} elseif (\is_string($value)) {
-			return new DateTimeImmutable($value);
-		} elseif (\is_integer($value)) {
-			return new DateTimeImmutable('@'.$value);
-		}
+		$value = $this->parse_date($value);
 
-		throw new RuntimeException('Invalid expires_on date value.');
+		if (empty($value)) {
+			throw new RuntimeException('Invalid expires_on date value.');
+		}
+		
+		return $value;
 	}
 
 	/**
@@ -97,10 +94,46 @@ class CredentialModel extends AbstractModel
 	 */
 	protected function mutate_expires_in ($value) {
 		if (!empty($this->_fields['consented_on']) && empty($this->_fields['expires_on'])) {
-			$this->_fields['expires_on'] = new DateTimeImmutable('@'.\strval($this->_fields['consented_on']->getTimestamp())+$value);
+			$this->_fields['expires_on'] = new DateTimeImmutable('@'.\strval($this->_fields['consented_on']->getTimestamp()+$value), $this->get('timezone', new DateTimeZone('UTC')));
 		}
 
 		return \intval($value);
+	}
+
+	/**
+	 * Mutate timezone to DateTimeZone.
+	 *
+	 * @param string|DateTimeZone $value
+	 * @since 1.0.8
+	 * @return DateTimeZone
+	 */
+	protected function mutate_timezone ($value) {
+		if ( $value instanceof DateTimeZone ) {
+			return $value;
+		} if ( \is_string($value) ) {
+			return new DateTimeZone($value);
+		}
+		
+		throw new RuntimeException('Invalid timezone value.');
+	}
+
+	/**
+	 * Parse DateTimeImmutable, string or integer to DateTimeImmutable.
+	 *
+	 * @param mixed $value
+	 * @since 1.0.8
+	 * @return DateTimeImmutable|null
+	 */
+	protected function parse_date ($value) : ?DateTimeImmutable {
+		if ($value instanceof DateTimeImmutable) {
+			return $value;
+		} elseif (\is_string($value)) {
+			return new DateTimeImmutable($value, $this->get('timezone', new DateTimeZone('UTC')));
+		} elseif (\is_integer($value)) {
+			return new DateTimeImmutable('@'.$value, $this->get('timezone', new DateTimeZone('UTC')));
+		}
+
+		return null;
 	}
 
 	/**
@@ -111,7 +144,7 @@ class CredentialModel extends AbstractModel
 	 */
 	public function isExpired () : bool {
 		if ( empty($this->_fields['expires_on']) ) {
-			return true;
+			return false;
 		}
 
 		$now = new DateTimeImmutable('now', $this->_fields['expires_on']->getTimezone());
@@ -127,7 +160,7 @@ class CredentialModel extends AbstractModel
 	public function export(): array
 	{
 		return [
-			'token_type' => $this->get('token_type'),
+			'token_type' => $this->get('token_type', static::TOKEN_TYPE_BEARER),
 			'access_token' => $this->get('access_token'),
 			'scope' => $this->get('scope'),
 			'consented_on' => $this->has('consented_on') ? $this->get('consented_on')->getTimestamp() : null,

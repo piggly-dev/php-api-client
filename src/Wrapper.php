@@ -79,7 +79,8 @@ abstract class Wrapper
 		$endpoints = static::endpointClasses();
 
 		if (isset($endpoints[$name]) ) {
-			return new $endpoints[$name]($this);
+			$cls = $endpoints[$name];
+			return new $cls($this);
 		}
 
 		throw new RuntimeException('Endpoint not implemented. Its class must exists on static::endpointClasses method.');

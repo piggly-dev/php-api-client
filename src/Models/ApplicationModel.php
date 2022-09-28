@@ -176,8 +176,8 @@ abstract class ApplicationModel extends AbstractModel
 	public function export(): array
 	{
 		return [
-			'environment' => $this->get('environment'),
-			'debug_mode' => $this->get('debug_mode'),
+			'environment' => $this->get('environment', static::ENV_HOMOL),
+			'debug_mode' => $this->get('debug_mode', false),
 			'client_id' => $this->get('client_id'),
 			'client_secret' => $this->get('client_secret'),
 			'credential' => $this->has('credential') ? $this->get('credential')->export() : [],
@@ -194,10 +194,10 @@ abstract class ApplicationModel extends AbstractModel
 	 */
 	public static function import(array $data)
 	{
-		$m = new ApplicationModel();
+		$m = new static(); 
 
 		$m->set('environment', $data['environment'] ?? static::ENV_HOMOL);
-		$m->set('debug_mode', $data['debug_mode'] ?? null);
+		$m->set('debug_mode', $data['debug_mode'] ?? false);
 		$m->set('client_id', $data['client_id'] ?? null);
 		$m->set('client_secret', $data['client_secret'] ?? null);
 		$m->set('credential', $data['credential'] ?? []);
