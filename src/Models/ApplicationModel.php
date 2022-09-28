@@ -14,7 +14,7 @@ use RuntimeException;
  * credential
  * certificate
  * 
- * @since 1.0.8
+ * @since 1.0.9
  * @category Interfaces
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient\Interfaces
@@ -26,7 +26,7 @@ abstract class ApplicationModel extends AbstractModel
 	/**
 	 * Test enviroment.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @var string
 	 */
 	public const ENV_TEST = 'test';
@@ -34,7 +34,7 @@ abstract class ApplicationModel extends AbstractModel
 	/**
 	 * Sandbox/homologation enviroment.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @var string
 	 */
 	public const ENV_HOMOL = 'homol';
@@ -42,7 +42,7 @@ abstract class ApplicationModel extends AbstractModel
 	/**
 	 * Production enviroment.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @var string
 	 */
 	public const ENV_PRODUCTION = 'prod';
@@ -51,7 +51,7 @@ abstract class ApplicationModel extends AbstractModel
 	 * Mutate env validating if has valid value.
 	 *
 	 * @param string|array $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return string
 	 * @throws RuntimeException
 	 */
@@ -68,7 +68,7 @@ abstract class ApplicationModel extends AbstractModel
 	 * Mutate debug mode to boolean.
 	 *
 	 * @param mixed $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return boolean
 	 */
 	protected function mutate_debug_mode($value)
@@ -80,7 +80,7 @@ abstract class ApplicationModel extends AbstractModel
 	 * Mutate credential to CredentialModel.
 	 *
 	 * @param mixed $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return CredentialModel
 	 * @throws RuntimeException
 	 */
@@ -99,7 +99,7 @@ abstract class ApplicationModel extends AbstractModel
 	 * Mutate certificate to a valid array.
 	 *
 	 * @param mixed $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return array
 	 * @throws RuntimeException
 	 */
@@ -121,7 +121,7 @@ abstract class ApplicationModel extends AbstractModel
 	/**
 	 * Return if has a valid access token.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return boolean
 	 */
 	public function isAccessTokenValid () : bool {
@@ -139,7 +139,7 @@ abstract class ApplicationModel extends AbstractModel
 	/**
 	 * Return if application is debugging.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return boolean
 	 */
 	public function isDebugging ():bool {
@@ -150,7 +150,7 @@ abstract class ApplicationModel extends AbstractModel
 	 * Check if current env is equal to $expected.
 	 *
 	 * @param string $expected
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return boolean
 	 */
 	public function isEnv(string $expected): bool
@@ -162,7 +162,7 @@ abstract class ApplicationModel extends AbstractModel
 	 * Must return the enviroment object according to
 	 * the current enviroment.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return EnvInterface
 	 */
 	abstract public function createEnviroment(): EnvInterface;
@@ -170,7 +170,7 @@ abstract class ApplicationModel extends AbstractModel
 	/**
 	 * Export object data to an array.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return array
 	 */
 	public function export(): array
@@ -189,7 +189,7 @@ abstract class ApplicationModel extends AbstractModel
 	 * Create a new application model with data.
 	 *
 	 * @param array $data
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return self
 	 */
 	public static function import(array $data)

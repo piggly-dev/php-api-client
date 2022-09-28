@@ -4,7 +4,7 @@ namespace Piggly\ApiClient\Models;
 /**
  * Abstract model with dynamic fields.
  * 
- * @since 1.0.8
+ * @since 1.0.9
  * @category Model
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient\Models
@@ -17,7 +17,7 @@ abstract class AbstractModel
 	 * Field.
 	 * 
 	 * @var array
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 */
 	protected $_fields = [];
 
@@ -26,7 +26,7 @@ abstract class AbstractModel
 	 *
 	 * @param string $name
 	 * @param mixed $default
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return mixed
 	 */
 	public function get (string $name, $default = null) {
@@ -40,7 +40,7 @@ abstract class AbstractModel
 	 *
 	 * @param string $name
 	 * @param mixed $value
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return self
 	 */
 	public function set (string $name, $value) {
@@ -56,7 +56,7 @@ abstract class AbstractModel
 	 * Check if a field exists.
 	 *
 	 * @param string $name
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return boolean
 	 */
 	public function has (string $name):bool {
@@ -67,7 +67,7 @@ abstract class AbstractModel
 	/**
 	 * Export object data to an array.
 	 *
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return array
 	 */
 	abstract public function export(): array;
@@ -77,7 +77,7 @@ abstract class AbstractModel
 	 * and return the instance created.
 	 *
 	 * @param array $data
-	 * @since 1.0.8
+	 * @since 1.0.9
 	 * @return self
 	 */
 	abstract public static function import(array $data);

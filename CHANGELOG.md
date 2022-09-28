@@ -37,3 +37,10 @@
 
 * [ADD] Methods to add queries and parameter.
 * [FIX] Fix URI builder on Request class.
+
+## `1.0.9` at `2022-09-28`
+
+* [ADD] Abstract model and models.
+* [ADD] Abstract classes for API wrapper and API endpoints;
+* [ADD] Clone method to `Configuration`;
+* [ADD] Enviroment interface to manipulate client configuration.

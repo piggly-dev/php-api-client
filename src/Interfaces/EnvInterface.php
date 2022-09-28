@@ -10,7 +10,7 @@ use Piggly\ApiClient\Request;
 /**
  * Interface for token authentication according with environment.
  * 
- * @since 1.0.8
+ * @since 1.0.9
  * @category Interfaces
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient\Interfaces
@@ -24,7 +24,7 @@ interface EnvInterface
 	 *
 	 * @param Configuration $client
 	 * @param ApplicationModel $app
-	 * @since 0.1.0
+	 * @since 1.0.9
 	 * @return void
 	 */
 	public function init(Configuration $client, ApplicationModel $app);
@@ -36,7 +36,7 @@ interface EnvInterface
 	 *
 	 * @param Configuration $client
 	 * @param ApplicationModel $app
-	 * @since 0.1.0
+	 * @since 1.0.9
 	 * @return CredentialModel
 	 */
 	public function token(Configuration $client, ApplicationModel $app): CredentialModel;
@@ -48,7 +48,7 @@ interface EnvInterface
 	 *
 	 * @param Configuration $client
 	 * @param ApplicationModel $app
-	 * @since 0.1.0
+	 * @since 1.0.9
 	 * @return Request
 	 */
 	public function prepare(Configuration $client, ApplicationModel $app): Request;
