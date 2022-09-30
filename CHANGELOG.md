@@ -48,3 +48,7 @@
 ## `1.0.10` at `2022-09-28`
 
 * [FIX] Invalid field name and timezone implementation at `CredentialModel`.
+
+## `1.0.11` at `2022-09-30`
+
+* [ADD] Implementation to an `AbstractEnvironment`.
