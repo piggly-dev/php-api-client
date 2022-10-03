@@ -57,3 +57,4 @@
 
 * [ADD] Allow get query string and url params on `Request`;
 * [CHANGE] Method `getUri` became public at `Request`;
+* [CHANGE] Wrong method name at `ApplicationModel` fixed to `createEnvironment`;
