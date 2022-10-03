@@ -24,7 +24,7 @@ use RuntimeException;
 abstract class ApplicationModel extends AbstractModel
 {
 	/**
-	 * Test enviroment.
+	 * Test Environment.
 	 *
 	 * @since 1.0.9
 	 * @var string
@@ -32,7 +32,7 @@ abstract class ApplicationModel extends AbstractModel
 	public const ENV_TEST = 'test';
 
 	/**
-	 * Sandbox/homologation enviroment.
+	 * Sandbox/homologation Environment.
 	 *
 	 * @since 1.0.9
 	 * @var string
@@ -40,7 +40,7 @@ abstract class ApplicationModel extends AbstractModel
 	public const ENV_HOMOL = 'homol';
 
 	/**
-	 * Production enviroment.
+	 * Production Environment.
 	 *
 	 * @since 1.0.9
 	 * @var string
@@ -159,13 +159,13 @@ abstract class ApplicationModel extends AbstractModel
 	}
 
 	/**
-	 * Must return the enviroment object according to
-	 * the current enviroment.
+	 * Must return the Environment object according to
+	 * the current Environment.
 	 *
 	 * @since 1.0.9
 	 * @return EnvInterface
 	 */
-	abstract public function createEnviroment(): EnvInterface;
+	abstract public function createEnvironment(): EnvInterface;
 
 	/**
 	 * Export object data to an array.
