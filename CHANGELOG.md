@@ -52,3 +52,8 @@
 ## `1.0.11` at `2022-09-30`
 
 * [ADD] Implementation to an `AbstractEnvironment`.
+
+## `1.0.12` at `2022-10-03`
+
+* [ADD] Allow get query string and url params on `Request`;
+* [CHANGE] Method `getUri` became public at `Request`;
