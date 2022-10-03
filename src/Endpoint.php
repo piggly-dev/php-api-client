@@ -39,7 +39,7 @@ abstract class Endpoint
 	public function __construct(Wrapper $api)
 	{
 		$this->_api = $api;
-		$this->_request = $api->getApp()->createEnviroment()->prepare($api->getConfig()->clone(), $api->getApp());
+		$this->_request = $api->getApp()->createEnvironment()->prepare($api->getConfig()->clone(), $api->getApp());
 	}
 
 	/**
