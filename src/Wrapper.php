@@ -65,7 +65,7 @@ abstract class Wrapper
 		}
 
 		// Init application enviroment, mutation configuration and application
-		$app->createEnviroment()->init($this->_client, $this->_app);
+		$app->createEnvironment()->init($this->_client, $this->_app);
 	}
 
 	/**
