@@ -166,6 +166,26 @@ class Request
 	{ return $this->config; }
 
 	/**
+	 * Get query params.
+	 *
+	 * @since 1.0.12
+	 * @return string
+	 */
+	public function getQuery () : string {
+		return $this->_query;
+	}
+
+	/**
+	 * Get url params.
+	 *
+	 * @since 1.0.12
+	 * @return string
+	 */
+	public function getParams () : array {
+		return $this->_params ?? [];
+	}
+
+	/**
 	 * Prepare a DELETE request.
 	 *
 	 * @param string $path
@@ -839,9 +859,10 @@ class Request
 	 * Get current URI.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.12 to public
 	 * @return string
 	 */
-	protected function getUri () : string
+	public function getUri () : string
 	{ 
 		$uri = $this->config->getHost().'/'.($this->_path ?? ''); 
 
