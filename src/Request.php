@@ -104,7 +104,7 @@ class Request
 	 * @var string
 	 * @since 1.0.0
 	 */
-	protected $_query;
+	protected $_query = '';
 
 	/**
 	 * Parameters to be replaced at uri.
