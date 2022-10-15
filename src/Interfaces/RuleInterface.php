@@ -1,5 +1,5 @@
 <?php
-namespace Piggly\ApiClient\Payloads\Rules;
+namespace Piggly\ApiClient\Interfaces;
 
 use InvalidArgumentException;
 
@@ -7,9 +7,9 @@ use InvalidArgumentException;
  * Rule to validate any value.
  * 
  * @since 1.1.0
- * @category Payload
+ * @category Interface
  * @package Piggly\ApiClient
- * @subpackage Piggly\ApiClient\Payloads
+ * @subpackage Piggly\ApiClient\Interfaces
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */

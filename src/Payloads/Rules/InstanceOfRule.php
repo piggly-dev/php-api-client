@@ -3,6 +3,7 @@
 namespace Piggly\ApiClient\Payloads\Rules;
 
 use InvalidArgumentException;
+use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
  * Assert if value is instance of expected.

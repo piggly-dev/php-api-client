@@ -3,6 +3,7 @@ namespace Piggly\ApiClient\Payloads;
 
 use Exception;
 use InvalidArgumentException;
+use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
  * Abstract payload with dynamic fields.
