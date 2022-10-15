@@ -1,6 +1,8 @@
 <?php
 namespace Piggly\ApiClient;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use Monolog\Logger;
 use Piggly\ApiClient\Models\ApplicationModel;
 use RuntimeException;
@@ -21,6 +23,14 @@ use RuntimeException;
  */
 abstract class Wrapper
 {
+	/**
+	 * Timezone.
+	 *
+	 * @var DateTimeZone
+	 * @since 0.1.0
+	 */
+	protected static $_timezone;
+
 	/**
 	 * Application settings.
 	 *
@@ -66,6 +76,7 @@ abstract class Wrapper
 
 		// Init application enviroment, mutation configuration and application
 		$app->createEnvironment()->init($this->_client, $this->_app);
+		static::$_timezone = new DateTimeZone('UTC');
 	}
 
 	/**
@@ -109,6 +120,18 @@ abstract class Wrapper
 	}
 
 	/**
+	 * Set global timezone.
+	 *
+	 * @param DateTimeZone $timezone
+	 * @since 0.1.0
+	 * @return void
+	 */
+	public static function timezone(DateTimeZone $timezone)
+	{
+		static::$_timezone = $timezone;
+	}
+
+	/**
 	 * Get all endpoint classes name.
 	 * Must return an array with endpoint name 
 	 * associated with its class name. eg:
@@ -119,4 +142,27 @@ abstract class Wrapper
 	 * @return array
 	 */
 	abstract public static function endpointClasses () : array;
+
+	/**
+	 * Create date with static timezone.
+	 *
+	 * @param mixed $value
+	 * @param string $format
+	 * @since 0.1.0
+	 * @return DateTimeImmutable
+	 */
+	public static function toDate($value, string $format = null)
+	{
+		if (empty($value) || $value instanceof DateTimeImmutable) {
+			return $value;
+		}
+
+		if (\is_integer($value)) {
+			return new DateTimeImmutable('@'.$value, static::$_timezone);
+		}
+
+		$value = \strval($value);
+
+		return !empty($format) ? DateTimeImmutable::createFromFormat($format, $value, static::$_timezone) : new DateTimeImmutable($value, static::$_timezone);
+	}
 }
