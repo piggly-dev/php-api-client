@@ -58,3 +58,7 @@
 * [ADD] Allow get query string and url params on `Request`;
 * [CHANGE] Method `getUri` became public at `Request`;
 * [CHANGE] Wrong method name at `ApplicationModel` fixed to `createEnvironment`;
+
+## `1.1.0` at `2022-10-14`
+
+* [ADD] Payload abstract class.
