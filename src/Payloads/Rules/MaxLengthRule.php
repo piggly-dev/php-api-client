@@ -3,6 +3,7 @@
 namespace Piggly\ApiClient\Payloads\Rules;
 
 use InvalidArgumentException;
+use Piggly\ApiClient\Interfaces\FixableInterface;
 use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
@@ -15,7 +16,7 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
-class MaxLengthRule implements RuleInterface
+class MaxLengthRule implements RuleInterface, FixableInterface
 {
 	/**
 	 * Max length allowed.
@@ -50,5 +51,21 @@ class MaxLengthRule implements RuleInterface
 		if (\strlen(\strval($value)) > $this->_max) {
 			throw new InvalidArgumentException(\sprintf('`%s` exceeded the max length (%d) allowed', $name, $this->_max));
 		}
+	}
+	
+	/**
+	 * Fix $value to expected value.
+	 * Return $value fixed.
+	 *
+	 * @param mixed $value
+	 * @since 1.1.0
+	 * @return mixed
+	 */
+	public function fix($value) {
+		if ( \is_null($value) ) {
+			return $value;
+		}
+
+		return \substr($value, 0, $this->_max);
 	}
 }

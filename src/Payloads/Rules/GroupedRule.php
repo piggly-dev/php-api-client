@@ -7,7 +7,7 @@ use Piggly\ApiClient\Interfaces\FixableInterface;
 use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
- * Assert if value is integer.
+ * Assert rules and value can be null.
  * 
  * @since 1.1.0
  * @category Payload
@@ -16,8 +16,27 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
-class IntegerRule implements RuleInterface, FixableInterface
+abstract class GroupedRule implements RuleInterface, FixableInterface
 {
+	/**
+	 * Rules.
+	 *
+	 * @var array<RuleInterface>
+	 * @since 1.1.0
+	 */
+	protected $_rules;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param array<RuleInterface> $_rules
+	 * @since 1.1.0
+	 */
+	public function __construct(array $_rules)
+	{
+		$this->_rules = $_rules;
+	}
+
 	/**
 	 * Assert value and must throw an
 	 * exception if invalid.
@@ -29,8 +48,8 @@ class IntegerRule implements RuleInterface, FixableInterface
 	 */
 	public function assert(string $name, $value)
 	{
-		if (!\is_int($value)) {
-			throw new InvalidArgumentException(\sprintf('`%s` must be integer', $name));
+		foreach ($this->_rules as $rule) {
+			$rule->assert($name, $value);
 		}
 	}
 	
@@ -43,10 +62,12 @@ class IntegerRule implements RuleInterface, FixableInterface
 	 * @return mixed
 	 */
 	public function fix($value) {
-		if ( \is_null($value) ) {
-			return $value;
+		foreach ( $this->_rules as $rule ) {
+			if ($rule instanceof FixableInterface) {
+				$value = $rule->fix($value);
+			}
 		}
 
-		return \intval($value);
+		return $value;
 	}
 }
