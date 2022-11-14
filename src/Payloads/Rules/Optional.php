@@ -3,11 +3,9 @@
 namespace Piggly\ApiClient\Payloads\Rules;
 
 use InvalidArgumentException;
-use Piggly\ApiClient\Interfaces\FixableInterface;
-use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
- * Assert if value is integer.
+ * Assert rules and value can be null.
  * 
  * @since 1.1.0
  * @category Payload
@@ -16,7 +14,7 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
-class IntegerRule implements RuleInterface, FixableInterface
+class Optional extends GroupedRule
 {
 	/**
 	 * Assert value and must throw an
@@ -29,24 +27,10 @@ class IntegerRule implements RuleInterface, FixableInterface
 	 */
 	public function assert(string $name, $value)
 	{
-		if (!\is_int($value)) {
-			throw new InvalidArgumentException(\sprintf('`%s` must be integer', $name));
-		}
-	}
-	
-	/**
-	 * Fix $value to expected value.
-	 * Return $value fixed.
-	 *
-	 * @param mixed $value
-	 * @since 1.1.0
-	 * @return mixed
-	 */
-	public function fix($value) {
 		if ( \is_null($value) ) {
-			return $value;
+			return;
 		}
 
-		return \intval($value);
+		parent::assert($name, $value);
 	}
 }

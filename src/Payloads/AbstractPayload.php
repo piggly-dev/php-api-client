@@ -3,6 +3,7 @@ namespace Piggly\ApiClient\Payloads;
 
 use Exception;
 use InvalidArgumentException;
+use Piggly\ApiClient\Interfaces\FixableInterface;
 use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
@@ -132,6 +133,29 @@ abstract class AbstractPayload
 		}
 
 		return $p;
+	}
+
+	/**
+	 * Fix values with schema.
+	 *
+	 * @since 1.1.0
+	 * @return self
+	 */
+	public function fix()
+	{
+		foreach (static::schema() as $field => $rules) {
+			if (empty($rules)) {
+				continue;
+			}
+
+			foreach ($rules as $rule) {
+				if ($rule instanceof FixableInterface) {
+					$this->_fields[$field] = $rule->fix($this->_fields[$field]);
+				}
+			}
+		}
+
+		return $this;
 	}
 
 	/**

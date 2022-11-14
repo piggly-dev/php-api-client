@@ -3,10 +3,11 @@
 namespace Piggly\ApiClient\Payloads\Rules;
 
 use InvalidArgumentException;
+use Piggly\ApiClient\Interfaces\FixableInterface;
 use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
- * Assert if value is instance of expected.
+ * Assert if value is string.
  * 
  * @since 1.1.0
  * @category Payload
@@ -15,27 +16,8 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
-class InstanceOfRule implements RuleInterface
+class BooleanRule implements RuleInterface, FixableInterface
 {
-	/**
-	 * Class name.
-	 *
-	 * @var string
-	 * @since 1.1.0
-	 */
-	protected $_class_name;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param string $class_name
-	 * @since 1.1.0
-	 */
-	public function __construct(string $class_name)
-	{
-		$this->_class_name = $class_name;
-	}
-
 	/**
 	 * Assert value and must throw an
 	 * exception if invalid.
@@ -47,8 +29,24 @@ class InstanceOfRule implements RuleInterface
 	 */
 	public function assert(string $name, $value)
 	{
-		if (!($value instanceof $this->_class_name)) {
-			throw new InvalidArgumentException(\sprintf('`%s` must be instance of %s', $name, $this->_class_name));
+		if (!\is_bool($value)) {
+			throw new InvalidArgumentException(\sprintf('`%s` must be boolean', $name));
 		}
+	}
+	
+	/**
+	 * Fix $value to expected value.
+	 * Return $value fixed.
+	 *
+	 * @param mixed $value
+	 * @since 1.1.0
+	 * @return mixed
+	 */
+	public function fix($value) {
+		if ( \is_null($value) ) {
+			return $value;
+		}
+
+		return \boolval($value);
 	}
 }

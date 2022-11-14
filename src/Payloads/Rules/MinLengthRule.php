@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
- * Assert if value is instance of expected.
+ * Assert if value is less than or equal to min length allowed.
  * 
  * @since 1.1.0
  * @category Payload
@@ -15,25 +15,25 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
-class InstanceOfRule implements RuleInterface
+class MinLengthRule implements RuleInterface
 {
 	/**
-	 * Class name.
+	 * Min length allowed.
 	 *
-	 * @var string
+	 * @var int
 	 * @since 1.1.0
 	 */
-	protected $_class_name;
+	protected $_min;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param string $class_name
+	 * @param integer $min_length
 	 * @since 1.1.0
 	 */
-	public function __construct(string $class_name)
+	public function __construct(int $min_length)
 	{
-		$this->_class_name = $class_name;
+		$this->_min = $min_length;
 	}
 
 	/**
@@ -47,8 +47,8 @@ class InstanceOfRule implements RuleInterface
 	 */
 	public function assert(string $name, $value)
 	{
-		if (!($value instanceof $this->_class_name)) {
-			throw new InvalidArgumentException(\sprintf('`%s` must be instance of %s', $name, $this->_class_name));
+		if (\strlen(\strval($value)) < $this->_min) {
+			throw new InvalidArgumentException(\sprintf('`%s` must has (%d) length or more', $name, $this->_min));
 		}
 	}
 }
