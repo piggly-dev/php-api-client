@@ -1,11 +1,12 @@
 <?php
+
 namespace Piggly\ApiClient\Supports;
 
 use InvalidArgumentException;
- 
+
 /**
  * Class to better manages HTTP headers.
- * 
+ *
  * @since 1.0.0
  * @category Class
  * @package Piggly\ApiClient
@@ -38,10 +39,11 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public function __construct ( array $headers = [] )
-	{ 
-		foreach ( $headers as $key => $content )
-		{ $this->add($key, $content); }
+	public function __construct(array $headers = [])
+	{
+		foreach ($headers as $key => $content) {
+			$this->add($key, $content);
+		}
 	}
 
 	/**
@@ -52,8 +54,11 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
-	public function raw ( string $raw )
-	{ $this->_raws[] = $raw; return $this; }
+	public function raw(string $raw)
+	{
+		$this->_raws[] = $raw;
+		return $this;
+	}
 
 	/**
 	 * Add a new header to bag.
@@ -64,8 +69,11 @@ class HeaderBag
 	 * @return HeaderBag
 	 * @throws InvalidArgumentException If $content is not string or array.
 	 */
-	public function add ( string $key, $content )
-	{ $this->_headers[\strtolower($key)] = $this->parseContent($content); return $this; }
+	public function add(string $key, $content)
+	{
+		$this->_headers[\strtolower($key)] = $this->parseContent($content);
+		return $this;
+	}
 
 	/**
 	 * Append $content to Header $key. If Header $key
@@ -77,15 +85,16 @@ class HeaderBag
 	 * @return HeaderBag
 	 * @throws InvalidArgumentException If $content is not string or array.
 	 */
-	public function append ( string $key, $content )
+	public function append(string $key, $content)
 	{
-		if ( !$this->has($key) )
-		{ return $this->add($key, $content); }
+		if (!$this->has($key)) {
+			return $this->add($key, $content);
+		}
 
 		$this->_headers[\strtolower($key)] = \array_merge(
-			$this->get($key), 
+			$this->get($key),
 			$this->parseContent($content)
-		); 
+		);
 
 		return $this;
 	}
@@ -98,8 +107,10 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return array|mixed
 	 */
-	public function get ( string $key, $default = null )
-	{ return $this->_headers[\strtolower($key)] ?? $default; }
+	public function get(string $key, $default = null)
+	{
+		return $this->_headers[\strtolower($key)] ?? $default;
+	}
 
 	/**
 	 * Remove the Header content.
@@ -108,8 +119,11 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
-	public function remove ( string $key )
-	{ unset($this->_headers[\strtolower($key)]); return $this; }
+	public function remove(string $key)
+	{
+		unset($this->_headers[\strtolower($key)]);
+		return $this;
+	}
 
 	/**
 	 * Merge current headers to new ones.
@@ -119,7 +133,7 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
-	public function mergeWith ( $headers )
+	public function mergeWith($headers)
 	{
 		$headers = static::prepare($headers);
 		$this->_headers = \array_merge($this->_headers, $headers->all());
@@ -133,8 +147,10 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return boolean
 	 */
-	public function has ( string $key ) : bool
-	{ return isset($this->_headers[\strtolower($key)]); }
+	public function has(string $key): bool
+	{
+		return isset($this->_headers[\strtolower($key)]);
+	}
 
 	/**
 	 * Check if $content is present at Header content.
@@ -144,10 +160,11 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return boolean
 	 */
-	public function is ( string $key, string $content ) : bool
+	public function is(string $key, string $content): bool
 	{
-		if ( !$this->has($key) )
-		{ return false; }
+		if (!$this->has($key)) {
+			return false;
+		}
 
 		return \stripos(implode(', ', $this->get($key)), $content) !== false;
 	}
@@ -160,21 +177,23 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
-	public function apply ( $headers )
+	public function apply($headers)
 	{
-		if ( $headers instanceof HeaderBag )
-		{ return $this->mergeWith($headers); }
+		if ($headers instanceof HeaderBag) {
+			return $this->mergeWith($headers);
+		}
 
-		if ( \is_array($headers) )
-		{ 
-			foreach ( $headers as $key => $content )
-			{ $this->append($key, $content); }
+		if (\is_array($headers)) {
+			foreach ($headers as $key => $content) {
+				$this->append($key, $content);
+			}
 
 			return $this;
 		}
 
-		if ( \is_string($headers) )
-		{ return $this->parseRaw($headers); }
+		if (\is_string($headers)) {
+			return $this->parseRaw($headers);
+		}
 
 		throw new InvalidArgumentException('Unexpected headers, it must be one of: string, array or HeaderBag object.');
 	}
@@ -185,18 +204,18 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return array
 	 */
-	public function cURL () : array
+	public function cURL(): array
 	{
 		$headers = [];
 
-		foreach ( $this->_headers as $key => $content )
-		{ 
+		foreach ($this->_headers as $key => $content) {
 			$content = \is_array($content) ? implode(', ', $content) : (string)$content;
-			$headers[] = "$key: $content"; 
+			$headers[] = "$key: $content";
 		}
 
-		foreach ( $this->_raws as $header )
-		{ $headers[] = $header; }
+		foreach ($this->_raws as $header) {
+			$headers[] = $header;
+		}
 
 		return $headers;
 	}
@@ -207,8 +226,10 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return array
 	 */
-	public function all () : array
-	{ return $this->_headers; }
+	public function all(): array
+	{
+		return $this->_headers;
+	}
 
 	/**
 	 * Prepare $headers argument transforming it
@@ -218,16 +239,19 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
-	public static function prepare ( $headers ) : HeaderBag
+	public static function prepare($headers): HeaderBag
 	{
-		if ( $headers instanceof HeaderBag )
-		{ return $headers; }
+		if ($headers instanceof HeaderBag) {
+			return $headers;
+		}
 
-		if ( \is_array($headers) )
-		{ return new HeaderBag($headers); }
+		if (\is_array($headers)) {
+			return new HeaderBag($headers);
+		}
 
-		if ( \is_string($headers) )
-		{ return static::fromString($headers); }
+		if (\is_string($headers)) {
+			return static::fromString($headers);
+		}
 
 		throw new InvalidArgumentException('Unexpected headers, it must be one of: string, array or HeaderBag object.');
 	}
@@ -239,7 +263,7 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
-	protected static function fromString ( string $raw ) : HeaderBag
+	protected static function fromString(string $raw): HeaderBag
 	{
 		$headers = new HeaderBag();
 		return $headers->parseRaw($raw);
@@ -252,23 +276,26 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return array
 	 */
-	private function parseContent ( $content ) : array
+	private function parseContent($content): array
 	{
-		if ( !\is_string($content) && !\is_array($content) )
-		{ throw new InvalidArgumentException('Header content is expecting a string or an array value.'); }
+		if (!\is_string($content) && !\is_array($content)) {
+			throw new InvalidArgumentException('Header content is expecting a string or an array value.');
+		}
 
-		if ( \is_array($content) )
-		{ return $content; }
+		if (\is_array($content)) {
+			return $content;
+		}
 
-		if ( $this->isJson($content) )
-		{ return [$content]; }
+		if ($this->isJson($content)) {
+			return [$content];
+		}
 
 		return \array_map(
-			function ( $content ) {
+			function ($content) {
 				return trim($content);
 			},
 			explode(',', $content)
-		); 
+		);
 	}
 
 	/**
@@ -278,14 +305,14 @@ class HeaderBag
 	 * @since 1.0.0
 	 * @return HeaderBag
 	 */
-	private function parseRaw ( string $raw )
+	private function parseRaw(string $raw)
 	{
 		$raw = explode("\n", $raw);
 
-		foreach ( $raw as $header )
-		{
-			if ( \stripos($header, ':') === false )
-			{ continue; }
+		foreach ($raw as $header) {
+			if (\stripos($header, ':') === false) {
+				continue;
+			}
 
 			$header  = explode(':', $header, 2);
 			$this->append(trim($header[0]), trim($header[1]));
@@ -302,18 +329,21 @@ class HeaderBag
 	 * @since 1.0.4 Not json when empty
 	 * @return bool
 	 */
-	private function isJson ( $value ) 
+	private function isJson($value)
 	{
-		if ( !\is_string( $value ) || empty($value) ) 
-		{ return false; }
+		if (!\is_string($value) || empty($value)) {
+			return false;
+		}
 
-		if ( '{' != $value[0] && '[' != $value[0] ) 
-		{ return false; }
+		if ('{' != $value[0] && '[' != $value[0]) {
+			return false;
+		}
 
 		$json_data = json_decode($value, true);
 
-		if ( json_last_error() !== JSON_ERROR_NONE )
-		{ return false; }
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			return false;
+		}
 
 		return true;
 	}

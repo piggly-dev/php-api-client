@@ -1,6 +1,6 @@
 <?php
-namespace Piggly\ApiClient\Interfaces;
 
+namespace Piggly\ApiClient\Interfaces;
 
 use Piggly\ApiClient\Configuration;
 use Piggly\ApiClient\Models\ApplicationModel;
@@ -9,7 +9,7 @@ use Piggly\ApiClient\Request;
 
 /**
  * Interface for token authentication according with environment.
- * 
+ *
  * @since 1.0.9
  * @category Interfaces
  * @package Piggly\ApiClient

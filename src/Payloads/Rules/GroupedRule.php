@@ -8,7 +8,7 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
  * Assert rules and value can be null.
- * 
+ *
  * @since 1.1.0
  * @category Payload
  * @package Piggly\ApiClient
@@ -52,7 +52,7 @@ abstract class GroupedRule implements RuleInterface, FixableInterface
 			$rule->assert($name, $value);
 		}
 	}
-	
+
 	/**
 	 * Fix $value to expected value.
 	 * Return $value fixed.
@@ -61,8 +61,9 @@ abstract class GroupedRule implements RuleInterface, FixableInterface
 	 * @since 1.1.0
 	 * @return mixed
 	 */
-	public function fix($value) {
-		foreach ( $this->_rules as $rule ) {
+	public function fix($value)
+	{
+		foreach ($this->_rules as $rule) {
 			if ($rule instanceof FixableInterface) {
 				$value = $rule->fix($value);
 			}

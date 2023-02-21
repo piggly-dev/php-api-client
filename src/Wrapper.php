@@ -1,4 +1,5 @@
 <?php
+
 namespace Piggly\ApiClient;
 
 use DateTimeImmutable;
@@ -10,10 +11,10 @@ use RuntimeException;
 /**
  * API wrapper. Here must have all endpoints to it.
  * Append to this class methods for each endpoints.
- * 
+ *
  * If API has the /movies endpoint, create moviesApi()
  * returning the endpoint object.
- * 
+ *
  * @since 1.0.9
  * @category API
  * @package Piggly\ApiClient
@@ -46,7 +47,7 @@ abstract class Wrapper
 	 * @var Configuration
 	 */
 	protected $_client;
-	
+
 	/**
 	 * Creates the API wrapper
 	 * to handle all API endpoints.
@@ -86,10 +87,11 @@ abstract class Wrapper
 	 * @since 1.0.9
 	 * @return Endpoint
 	 */
-	public function endpoint (string $name) {
+	public function endpoint(string $name)
+	{
 		$endpoints = static::endpointClasses();
 
-		if (isset($endpoints[$name]) ) {
+		if (isset($endpoints[$name])) {
 			$cls = $endpoints[$name];
 			return new $cls($this);
 		}
@@ -133,15 +135,15 @@ abstract class Wrapper
 
 	/**
 	 * Get all endpoint classes name.
-	 * Must return an array with endpoint name 
+	 * Must return an array with endpoint name
 	 * associated with its class name. eg:
-	 * 
+	 *
 	 * [ 'movies' => \Api\Movies::class ];
-	 * 
+	 *
 	 * @since 1.0.9
 	 * @return array
 	 */
-	abstract public static function endpointClasses () : array;
+	abstract public static function endpointClasses(): array;
 
 	/**
 	 * Create date with static timezone.

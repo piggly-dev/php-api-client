@@ -1,4 +1,5 @@
 <?php
+
 namespace Piggly\ApiClient\Exceptions;
 
 use Exception;
@@ -8,7 +9,7 @@ use Piggly\ApiClient\Configuration;
 /**
  * An Api Exception which makes link to server response object,
  * HTTP headers and body.
- * 
+ *
  * @since 1.0.0
  * @category Class
  * @package Piggly\ApiClient
@@ -49,15 +50,15 @@ class ApiRequestException extends Exception
 		$method = null,
 		$uri = null,
 		$config = null
-	)
-	{
+	) {
 		parent::__construct($message, $code);
 
 		$this->_method = $method;
 		$this->_uri = $uri;
 
-		if ( $config instanceof Configuration )
-		{ $config->log(Logger::ERROR, 'api.request.error -> '.$message, ['method' => $this->_method, 'uri' => $this->_uri]); }
+		if ($config instanceof Configuration) {
+			$config->log(Logger::ERROR, 'api.request.error -> '.$message, ['method' => $this->_method, 'uri' => $this->_uri]);
+		}
 	}
 
 	/**
@@ -66,8 +67,10 @@ class ApiRequestException extends Exception
 	 * @return mixed
 	 * @since 1.0.0
 	 */
-	public function getHTTPMethod ()
-	{ return $this->_method ?? null; }
+	public function getHTTPMethod()
+	{
+		return $this->_method ?? null;
+	}
 
 	/**
 	 * Get the HTTP uri.
@@ -75,6 +78,8 @@ class ApiRequestException extends Exception
 	 * @return mixed
 	 * @since 1.0.0
 	 */
-	public function getUri ()
-	{ return $this->_uri ?? null; }
+	public function getUri()
+	{
+		return $this->_uri ?? null;
+	}
 }

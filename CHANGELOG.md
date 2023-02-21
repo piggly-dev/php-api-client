@@ -62,3 +62,11 @@
 ## `1.1.0` at `2022-10-14`
 
 * [ADD] Payload abstract class.
+
+
+## `1.2.0` at `2022-10-14`
+
+* [ADD] CS Fixer;
+* [CHANGE] `addQuery()` will be `appendQuery()` method now;
+* [FIX] Invalid return data to `delete()` method.
+* [SUPPORT] PHP 8.0+

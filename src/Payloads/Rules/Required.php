@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 /**
  * Assert rules if value is not null.
- * 
+ *
  * @since 1.1.0
  * @category Payload
  * @package Piggly\ApiClient
@@ -30,7 +30,7 @@ class Required extends GroupedRule
 		if (\is_null($value)) {
 			throw new InvalidArgumentException(\sprintf('`%s` is required', $name));
 		}
-		
+
 		parent::assert($name, $value);
 	}
 }

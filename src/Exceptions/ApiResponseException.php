@@ -1,4 +1,5 @@
 <?php
+
 namespace Piggly\ApiClient\Exceptions;
 
 use Exception;
@@ -9,7 +10,7 @@ use Piggly\ApiClient\Supports\HeaderBag;
 /**
  * An Api Exception which makes link to server response object,
  * HTTP headers and body.
- * 
+ *
  * @since 1.0.0
  * @category Class
  * @package Piggly\ApiClient
@@ -81,8 +82,7 @@ class ApiResponseException extends Exception
 		$method = null,
 		$uri = null,
 		$config = null
-	)
-	{
+	) {
 		parent::__construct($message, $code);
 
 		$this->_headers = !is_null($headers) ? HeaderBag::prepare($headers) : null;
@@ -90,8 +90,9 @@ class ApiResponseException extends Exception
 		$this->_method = $method;
 		$this->_uri = $uri;
 
-		if ( $config instanceof Configuration )
-		{ $config->log(Logger::ERROR, 'api.response.error -> '.$message, ['method' => $this->_method, 'uri' => $this->_uri]); }
+		if ($config instanceof Configuration) {
+			$config->log(Logger::ERROR, 'api.response.error -> '.$message, ['method' => $this->_method, 'uri' => $this->_uri]);
+		}
 	}
 
 	/**
@@ -100,8 +101,10 @@ class ApiResponseException extends Exception
 	 * @since 1.0.0
 	 * @return mixed
 	 */
-	public function getHTTPMethod ()
-	{ return $this->_method ?? null; }
+	public function getHTTPMethod()
+	{
+		return $this->_method ?? null;
+	}
 
 	/**
 	 * Get the HTTP uri.
@@ -109,18 +112,22 @@ class ApiResponseException extends Exception
 	 * @since 1.0.0
 	 * @return mixed
 	 */
-	public function getUri ()
-	{ return $this->_uri ?? null; }
+	public function getUri()
+	{
+		return $this->_uri ?? null;
+	}
 
 	/**
-	 * Get the HTTP body of the server response 
+	 * Get the HTTP body of the server response
 	 * either as JSON or string.
 	 *
 	 * @since 1.0.0
 	 * @return mixed
 	 */
-	public function getResponseBody ()
-	{ return $this->_body ?? null; }
+	public function getResponseBody()
+	{
+		return $this->_body ?? null;
+	}
 
 	/**
 	 * All HTTP headers from
@@ -129,19 +136,24 @@ class ApiResponseException extends Exception
 	 * @since 1.0.0
 	 * @return HeaderBag|null
 	 */
-	public function getResponseHeaders () : ?HeaderBag
-	{ return $this->_headers ?? null; }
+	public function getResponseHeaders(): ?HeaderBag
+	{
+		return $this->_headers ?? null;
+	}
 
 	/**
-	 * Set the deseralized response object 
+	 * Set the deseralized response object
 	 * (during deserialization).
 	 *
 	 * @param mixed $response
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public function setReponseObject ( $response )
-	{ $this->_object = $response; return $this; }
+	public function setReponseObject($response)
+	{
+		$this->_object = $response;
+		return $this;
+	}
 
 	/**
 	 * The deserialized server response object.
@@ -149,6 +161,8 @@ class ApiResponseException extends Exception
 	 * @since 1.0.0
 	 * @return mixed
 	 */
-	public function getResponseObject ()
-	{ return $this->_object ?? null; }
+	public function getResponseObject()
+	{
+		return $this->_object ?? null;
+	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Piggly\ApiClient\Models;
 
 use DateTimeImmutable;
@@ -7,14 +8,14 @@ use RuntimeException;
 
 /**
  * Model for a credential token. The expected fields are:
- * 
+ *
  * scope
  * access_token
  * token_type
  * consented_on
  * expires_on
  * expires_in
- * 
+ *
  * @since 1.0.9
  * @category Interfaces
  * @package Piggly\ApiClient
@@ -26,11 +27,11 @@ class CredentialModel extends AbstractModel
 {
 	/**
 	 * Bearer token type.
-	 * 
+	 *
 	 * @var string
 	 * @since 1.0.9
 	 */
-	const TOKEN_TYPE_BEARER = 'Bearer';
+	public const TOKEN_TYPE_BEARER = 'Bearer';
 
 	/**
 	 * Mutate scope string to an array.
@@ -42,7 +43,7 @@ class CredentialModel extends AbstractModel
 	 */
 	protected function mutate_scope($value)
 	{
-		if ( \is_string($value)) {
+		if (\is_string($value)) {
 			return \explode(' ', $value);
 		} elseif (\is_array($value)) {
 			return $value;
@@ -58,13 +59,14 @@ class CredentialModel extends AbstractModel
 	 * @since 1.0.9
 	 * @return DateTimeImmutable
 	 */
-	protected function mutate_consented_on ($value) {
+	protected function mutate_consented_on($value)
+	{
 		$value = $this->parse_date($value);
 
 		if (empty($value)) {
 			throw new RuntimeException('Invalid consented_on date value.');
 		}
-		
+
 		return $value;
 	}
 
@@ -75,13 +77,14 @@ class CredentialModel extends AbstractModel
 	 * @since 1.0.9
 	 * @return DateTimeImmutable
 	 */
-	protected function mutate_expires_on ($value) {
+	protected function mutate_expires_on($value)
+	{
 		$value = $this->parse_date($value);
 
 		if (empty($value)) {
 			throw new RuntimeException('Invalid expires_on date value.');
 		}
-		
+
 		return $value;
 	}
 
@@ -92,7 +95,8 @@ class CredentialModel extends AbstractModel
 	 * @since 1.0.9
 	 * @return integer
 	 */
-	protected function mutate_expires_in ($value) {
+	protected function mutate_expires_in($value)
+	{
 		if (!empty($this->_fields['consented_on']) && empty($this->_fields['expires_on'])) {
 			$this->_fields['expires_on'] = new DateTimeImmutable('@'.\strval($this->_fields['consented_on']->getTimestamp()+$value), $this->get('timezone', new DateTimeZone('UTC')));
 		}
@@ -107,13 +111,14 @@ class CredentialModel extends AbstractModel
 	 * @since 1.0.9
 	 * @return DateTimeZone
 	 */
-	protected function mutate_timezone ($value) {
-		if ( $value instanceof DateTimeZone ) {
+	protected function mutate_timezone($value)
+	{
+		if ($value instanceof DateTimeZone) {
 			return $value;
-		} if ( \is_string($value) ) {
+		} if (\is_string($value)) {
 			return new DateTimeZone($value);
 		}
-		
+
 		throw new RuntimeException('Invalid timezone value.');
 	}
 
@@ -124,7 +129,8 @@ class CredentialModel extends AbstractModel
 	 * @since 1.0.9
 	 * @return DateTimeImmutable|null
 	 */
-	protected function parse_date ($value) : ?DateTimeImmutable {
+	protected function parse_date($value): ?DateTimeImmutable
+	{
 		if ($value instanceof DateTimeImmutable) {
 			return $value;
 		} elseif (\is_string($value)) {
@@ -142,8 +148,9 @@ class CredentialModel extends AbstractModel
 	 * @since 1.0.9
 	 * @return boolean
 	 */
-	public function isExpired () : bool {
-		if ( empty($this->_fields['expires_on']) ) {
+	public function isExpired(): bool
+	{
+		if (empty($this->_fields['expires_on'])) {
 			return false;
 		}
 
@@ -188,9 +195,15 @@ class CredentialModel extends AbstractModel
 		$m->set('scope', $data['scope'] ?? []);
 		$m->set('timezone', $data['timezone'] ?? new DateTimeZone('UTC'));
 
-		if ( !empty($data['consented_on']) ) $m->set('consented_on', $data['consented_on']);
-		if ( !empty($data['expires_on']) ) $m->set('expires_on', $data['expires_on']);
-		if ( !empty($data['expires_in']) ) $m->set('expires_in', $data['expires_in']);
+		if (!empty($data['consented_on'])) {
+			$m->set('consented_on', $data['consented_on']);
+		}
+		if (!empty($data['expires_on'])) {
+			$m->set('expires_on', $data['expires_on']);
+		}
+		if (!empty($data['expires_in'])) {
+			$m->set('expires_in', $data['expires_in']);
+		}
 
 		return $m;
 	}

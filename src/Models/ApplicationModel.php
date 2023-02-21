@@ -1,4 +1,5 @@
 <?php
+
 namespace Piggly\ApiClient\Models;
 
 use Piggly\ApiClient\Interfaces\EnvInterface;
@@ -6,14 +7,14 @@ use RuntimeException;
 
 /**
  * Model for an application. The expected fields are:
- * 
+ *
  * environment
  * debug_mode
  * client_id
  * client_secret
  * credential
  * certificate
- * 
+ *
  * @since 1.0.9
  * @category Interfaces
  * @package Piggly\ApiClient
@@ -57,7 +58,7 @@ abstract class ApplicationModel extends AbstractModel
 	 */
 	protected function mutate_environment($value)
 	{
-		if ( \in_array($value, [static::ENV_TEST, static::ENV_HOMOL, static::ENV_PRODUCTION])) {
+		if (\in_array($value, [static::ENV_TEST, static::ENV_HOMOL, static::ENV_PRODUCTION])) {
 			return $value;
 		}
 
@@ -86,9 +87,9 @@ abstract class ApplicationModel extends AbstractModel
 	 */
 	protected function mutate_credential($value)
 	{
-		if ( $value instanceof CredentialModel ) {
+		if ($value instanceof CredentialModel) {
 			return $value;
-		} elseif ( \is_array($value) ) {
+		} elseif (\is_array($value)) {
 			return CredentialModel::import($value);
 		}
 
@@ -103,14 +104,15 @@ abstract class ApplicationModel extends AbstractModel
 	 * @return array
 	 * @throws RuntimeException
 	 */
-	protected function mutate_certificate ($value) {
-		if ( empty($value) ) {
+	protected function mutate_certificate($value)
+	{
+		if (empty($value)) {
 			// can be empty
 			return $value;
 		}
 
-		if ( \is_array($value) ) {
-			if ( isset($value['key'], $value['cert']) ) {
+		if (\is_array($value)) {
+			if (isset($value['key'], $value['cert'])) {
 				return $value;
 			}
 		}
@@ -124,12 +126,13 @@ abstract class ApplicationModel extends AbstractModel
 	 * @since 1.0.9
 	 * @return boolean
 	 */
-	public function isAccessTokenValid () : bool {
-		if ( !$this->has('credential') ) {
+	public function isAccessTokenValid(): bool
+	{
+		if (!$this->has('credential')) {
 			return false;
 		}
 
-		if ( !$this->get('credential')->has('access_token') ) {
+		if (!$this->get('credential')->has('access_token')) {
 			return false;
 		}
 
@@ -142,7 +145,8 @@ abstract class ApplicationModel extends AbstractModel
 	 * @since 1.0.9
 	 * @return boolean
 	 */
-	public function isDebugging ():bool {
+	public function isDebugging(): bool
+	{
 		return $this->get('debug_mode', false);
 	}
 
@@ -194,7 +198,7 @@ abstract class ApplicationModel extends AbstractModel
 	 */
 	public static function import(array $data)
 	{
-		$m = new static(); 
+		$m = new static();
 
 		$m->set('environment', $data['environment'] ?? static::ENV_HOMOL);
 		$m->set('debug_mode', $data['debug_mode'] ?? false);

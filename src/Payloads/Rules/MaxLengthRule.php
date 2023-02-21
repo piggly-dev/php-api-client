@@ -8,7 +8,7 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
  * Assert if value is less than or equal to max length allowed.
- * 
+ *
  * @since 1.1.0
  * @category Payload
  * @package Piggly\ApiClient
@@ -52,7 +52,7 @@ class MaxLengthRule implements RuleInterface, FixableInterface
 			throw new InvalidArgumentException(\sprintf('`%s` exceeded the max length (%d) allowed', $name, $this->_max));
 		}
 	}
-	
+
 	/**
 	 * Fix $value to expected value.
 	 * Return $value fixed.
@@ -61,8 +61,9 @@ class MaxLengthRule implements RuleInterface, FixableInterface
 	 * @since 1.1.0
 	 * @return mixed
 	 */
-	public function fix($value) {
-		if ( \is_null($value) ) {
+	public function fix($value)
+	{
+		if (\is_null($value)) {
 			return $value;
 		}
 

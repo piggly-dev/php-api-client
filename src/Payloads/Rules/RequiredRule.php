@@ -7,7 +7,7 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
  * Assert if value is not null.
- * 
+ *
  * @since 1.1.0
  * @category Payload
  * @package Piggly\ApiClient

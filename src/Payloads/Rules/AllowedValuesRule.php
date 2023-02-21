@@ -7,7 +7,7 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
  * Assert if value is allowed in list.
- * 
+ *
  * @since 1.1.0
  * @category Payload
  * @package Piggly\ApiClient

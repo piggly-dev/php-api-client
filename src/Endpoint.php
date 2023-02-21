@@ -1,9 +1,10 @@
 <?php
+
 namespace Piggly\ApiClient;
 
 /**
  * API endpoint associated to the wrapper.
- * 
+ *
  * @since 1.0.9
  * @category API
  * @package Piggly\ApiClient

@@ -7,7 +7,7 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
  * Assert if value is instance of expected.
- * 
+ *
  * @since 1.1.0
  * @category Payload
  * @package Piggly\ApiClient

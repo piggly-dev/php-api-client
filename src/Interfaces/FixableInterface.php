@@ -1,9 +1,10 @@
 <?php
+
 namespace Piggly\ApiClient\Interfaces;
 
 /**
  * Indicates that object have fix operations.
- * 
+ *
  * @since 1.1.0
  * @category Interface
  * @package Piggly\ApiClient
