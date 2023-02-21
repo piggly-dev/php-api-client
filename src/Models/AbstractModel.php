@@ -1,9 +1,10 @@
 <?php
+
 namespace Piggly\ApiClient\Models;
 
 /**
  * Abstract model with dynamic fields.
- * 
+ *
  * @since 1.0.9
  * @category Model
  * @package Piggly\ApiClient
@@ -15,7 +16,7 @@ abstract class AbstractModel
 {
 	/**
 	 * Field.
-	 * 
+	 *
 	 * @var array
 	 * @since 1.0.9
 	 */
@@ -29,7 +30,8 @@ abstract class AbstractModel
 	 * @since 1.0.9
 	 * @return mixed
 	 */
-	public function get (string $name, $default = null) {
+	public function get(string $name, $default = null)
+	{
 		return $this->_fields[$name] ?? $default;
 	}
 
@@ -43,8 +45,9 @@ abstract class AbstractModel
 	 * @since 1.0.9
 	 * @return self
 	 */
-	public function set (string $name, $value) {
-		if ( \method_exists($this, 'mutate_'.$name) ) {
+	public function set(string $name, $value)
+	{
+		if (\method_exists($this, 'mutate_'.$name)) {
 			$value = $this->{'mutate_'.$name}($value);
 		}
 
@@ -59,11 +62,12 @@ abstract class AbstractModel
 	 * @since 1.0.9
 	 * @return boolean
 	 */
-	public function has (string $name):bool {
+	public function has(string $name): bool
+	{
 		return isset($this->_fields[$name]);
 	}
 
-	
+
 	/**
 	 * Export object data to an array.
 	 *
@@ -71,7 +75,7 @@ abstract class AbstractModel
 	 * @return array
 	 */
 	abstract public function export(): array;
-	
+
 	/**
 	 * Create a new model, import data to it
 	 * and return the instance created.

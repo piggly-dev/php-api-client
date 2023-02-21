@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 /**
  * Assert rules and value can be null.
- * 
+ *
  * @since 1.1.0
  * @category Payload
  * @package Piggly\ApiClient
@@ -27,7 +27,7 @@ class Optional extends GroupedRule
 	 */
 	public function assert(string $name, $value)
 	{
-		if ( \is_null($value) ) {
+		if (\is_null($value)) {
 			return;
 		}
 

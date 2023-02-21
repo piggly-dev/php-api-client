@@ -8,7 +8,7 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
  * Assert if value is float.
- * 
+ *
  * @since 1.1.0
  * @category Payload
  * @package Piggly\ApiClient
@@ -33,7 +33,7 @@ class FloatRule implements RuleInterface, FixableInterface
 			throw new InvalidArgumentException(\sprintf('`%s` must be float', $name));
 		}
 	}
-	
+
 	/**
 	 * Fix $value to expected value.
 	 * Return $value fixed.
@@ -42,8 +42,9 @@ class FloatRule implements RuleInterface, FixableInterface
 	 * @since 1.1.0
 	 * @return mixed
 	 */
-	public function fix($value) {
-		if ( \is_null($value) ) {
+	public function fix($value)
+	{
+		if (\is_null($value)) {
 			return $value;
 		}
 

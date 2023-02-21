@@ -1,11 +1,12 @@
 <?php
+
 namespace Piggly\ApiClient\Interfaces;
 
 use InvalidArgumentException;
 
 /**
  * Rule to validate any value.
- * 
+ *
  * @since 1.1.0
  * @category Interface
  * @package Piggly\ApiClient

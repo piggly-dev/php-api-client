@@ -7,7 +7,7 @@ use Piggly\ApiClient\Interfaces\RuleInterface;
 
 /**
  * Assert if value is less than or equal to min length allowed.
- * 
+ *
  * @since 1.1.0
  * @category Payload
  * @package Piggly\ApiClient
