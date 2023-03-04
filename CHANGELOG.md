@@ -68,5 +68,11 @@
 
 * [ADD] CS Fixer;
 * [CHANGE] `addQuery()` will be `appendQuery()` method now;
-* [FIX] Invalid return data to `delete()` method.
-* [SUPPORT] PHP 8.0+
+* [FIX] Invalid return data to `delete()` method;
+* [SUPPORT] PHP 8.0+.
+
+## `2.0.0` at `2023-03-04`
+
+* Many break changes, including a new Response object and changes on ApiResponseExpection properties.
+* Some part of the code was optimized and some methods were deprecated.
+* You must see code for details and changes.

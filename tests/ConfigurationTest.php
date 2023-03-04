@@ -1,4 +1,5 @@
 <?php
+
 namespace Piggly\Tests\ApiClient\Supports;
 
 use PHPUnit\Framework\TestCase;
@@ -10,14 +11,21 @@ use Piggly\ApiClient\Configuration;
 class ConfigurationTest extends TestCase
 {
 	/** @test Expecting positive assertion. */
-	public function assertIfCanReadEnvironment ()
+	public function assertIfCanReadEnvironment()
 	{
 		$config = new Configuration();
-		
-		$config->env(
-			__DIR__.'/../',
-			'example'
-		);
+
+		$config->username('username');
+		$config->password('password');
+		$config->debug(true);
+		$config->host('http://localhost');
+		$config->userAgent('MyServer/1.0');
+		$config->timeout(60);
+		$config->connectionTimeout(60);
+		$config->proxyHost('proxy://localhost');
+		$config->proxyPort(5050);
+		$config->proxyUser('proxyusername');
+		$config->proxyPassword('proxypassword');
 
 		$this->assertSame(
 			[

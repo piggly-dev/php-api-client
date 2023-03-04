@@ -6,6 +6,7 @@ use Piggly\ApiClient\Configuration;
 use Piggly\ApiClient\Exceptions\ApiRequestException;
 use Piggly\ApiClient\Exceptions\ApiResponseException;
 use Piggly\ApiClient\Supports\HeaderBag;
+use Piggly\ApiClient\Utils\Parser;
 
 /**
  * API request.
@@ -337,9 +338,10 @@ class Request
 	 * Get current HTTP headers.
 	 *
 	 * @since 1.0.0
+	 * @since 2.0.0 new method name.
 	 * @return HeaderBag
 	 */
-	public function headers(): HeaderBag
+	public function getHeaders(): HeaderBag
 	{
 		return $this->_headers;
 	}
@@ -349,9 +351,10 @@ class Request
 	 *
 	 * @param HeaderBag|array|string $headers
 	 * @since 1.0.0
+	 * @since 2.0.0 new method name.
 	 * @return Request
 	 */
-	public function applyHeaders($headers)
+	public function headers($headers)
 	{
 		$this->_headers->apply($headers);
 		return $this;
@@ -466,19 +469,6 @@ class Request
 	}
 
 	/**
-	 * Alias to appendQuery().
-	 *
-	 * @deprecated 1.2.0 Use appendQuery() instead.
-	 * @since 1.2.0
-	 * @return Request
-	 * @throws ApiRequestException
-	 */
-	public function addQuery($query)
-	{
-		return $this->query(...func_get_args());
-	}
-
-	/**
 	 * Add URL query parameters. It uses the http_build_query()
 	 * PHP function.
 	 *
@@ -515,12 +505,14 @@ class Request
 	 *
 	 * @param string $type
 	 * @since 1.0.0
+	 * @since 2.0.0 Get all types from Response class.
+	 * @see Response
 	 * @return Request
 	 * @throws ApiRequestException
 	 */
 	public function responseType(string $type)
 	{
-		if (!\in_array($type, ['\SplFileObject', 'string', 'array'], true) === false) {
+		if (!\in_array($type, Response::allBodyTypes(), true) === false) {
 			throw new ApiRequestException(
 				'Response type must be one of: string, array or \SplFileObject.',
 				5,
@@ -538,11 +530,10 @@ class Request
 	 * Does an API call.
 	 *
 	 * @since 1.0.0
-	 * @since 1.0.6 Apply all curl modifiers.
-	 * @since 1.0.7 Fixed error when throw exception with array as body
-	 * @return array In format [$http_body, $http_code, $http_header].
-	* @throws ApiRequestException something went wrong to request
-	* @throws ApiResponseException on a non 2xx response
+	 * @since 2.0.0 Return Response object.
+	 * @return Response
+	 * @throws ApiRequestException something went wrong to request
+	 * @throws ApiResponseException on a non 2xx response
 	 */
 	public function call()
 	{
@@ -586,7 +577,6 @@ class Request
 		}
 
 		// Proxy settings
-
 		if ($this->config->getProxyHost()) {
 			\curl_setopt($cURL, \CURLOPT_PROXY, $this->config->getProxyHost());
 		}
@@ -662,7 +652,7 @@ class Request
 		/** @var HeaderBag $http_header Extract headers. */
 		$http_header = HeaderBag::prepare(\substr($response, 0, $http_header_size));
 		/** @var string $http_body Extract body. */
-		$http_body = \substr($response, $http_header_size);
+		$http_body = Parser::decodeJSONOrRaw(\substr($response, $http_header_size), $this->_responseType);
 
 		// Get response info
 		$response_info = \curl_getinfo($cURL);
@@ -674,60 +664,42 @@ class Request
 			if (!empty($message)) {
 				$message = \sprintf('API call to `%s` failed: %s', $uri, $message);
 			} else {
-				$message = \sprintf('API call to `%s` failed: Unknown reasion.', $uri);
+				$message = \sprintf('API call to `%s` failed: Unknown reason.', $uri);
 			}
 
-			$e = new ApiResponseException(
+			throw new ApiRequestException(
 				$message,
 				0,
-				$http_header,
-				$http_body,
 				$this->_method,
 				$this->getUri(),
 				$this->config
 			);
-
-			$e->setReponseObject($response_info);
-			throw $e;
 		}
+
+		$resp = new Response(
+			$response_info['http_code'],
+			$uri,
+			$this->_method,
+			$http_header,
+			$http_body,
+			$response_info,
+			$this
+		);
 
 		// Invalid response
 		if ($response_info['http_code'] < 200 || $response_info['http_code'] >= 300) {
-			$data = \json_decode($http_body, true);
-
-			// Cannot decode json, restore raw body
-			if (\json_last_error() > 0) {
-				$data = $http_body;
-			}
-
-			throw new ApiResponseException(
+			$this->throwResponseException(
 				\sprintf(
 					'Error while requesting server, received a non successful HTTP code `%s` with response body: %s.',
 					$response_info['http_code'],
-					\is_object($data) ? serialize($data) : (\is_array($data) ? \json_encode($data) : \strval($data))
+					Parser::anyToString($http_body)
 				),
 				$response_info['http_code'],
-				$http_header,
-				$data,
-				$this->_method,
-				$this->getUri(),
-				$this->config
+				$resp
 			);
 		}
 
-		// Raw body according to response type
-		if ($this->_responseType === '\SplFileObject' || $this->_responseType === 'string') {
-			return [$http_body, $response_info['http_code'], $http_header];
-		}
-
-		$data = \json_decode($http_body, true);
-
-		// Cannot decode json, restore raw body
-		if (\json_last_error() > 0) {
-			$data = $http_body;
-		}
-
-		return [$data, $response_info['http_code'], $http_header];
+		return $resp;
 	}
 
 	/**
@@ -800,7 +772,7 @@ class Request
 		}
 
 		if (!\is_null($headers)) {
-			$this->applyHeaders($headers);
+			$this->headers($headers);
 		}
 
 		if (!\is_null($responseType)) {
@@ -840,7 +812,7 @@ class Request
 		}
 
 		if (!\is_null($headers)) {
-			$this->applyHeaders($headers);
+			$this->headers($headers);
 		}
 
 		if (!\is_null($responseType)) {
@@ -935,21 +907,20 @@ class Request
 	 * Throw an ApiResponseException.
 	 *
 	 * @param string $message
-	 * @since 1.0.7
-	 * @return void
+	 * @param int $status
+	 * @param Response $response
+	 * @since 2.0.0
 	 * @throws ApiResponseException
 	 */
 	public function throwResponseException(
-		string $message
+		string $message,
+		int $status,
+		Response $response
 	) {
 		throw new ApiResponseException(
 			$message,
-			0,
-			null,
-			null,
-			$this->_method,
-			$this->getUri(),
-			$this->config
+			$status,
+			$response
 		);
 	}
 }

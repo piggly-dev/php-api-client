@@ -1,4 +1,5 @@
 <?php
+
 namespace Piggly\Tests\ApiClient\Models;
 
 use DateTimeImmutable;
@@ -10,7 +11,8 @@ use Piggly\ApiClient\Models\CredentialModel;
 use Piggly\ApiClient\Request;
 use RuntimeException;
 
-class ProdEnv implements EnvInterface {
+class ProdEnv implements EnvInterface
+{
 	/**
 	 * Init enviroment at client configuration.
 	 *
@@ -19,7 +21,8 @@ class ProdEnv implements EnvInterface {
 	 * @since 0.1.0
 	 * @return void
 	 */
-	public function init(Configuration $client, ApplicationModel $app) {
+	public function init(Configuration $client, ApplicationModel $app)
+	{
 		// do nothing
 	}
 
@@ -33,12 +36,13 @@ class ProdEnv implements EnvInterface {
 	 * @since 0.1.0
 	 * @return CredentialModel
 	 */
-	public function token(Configuration $client, ApplicationModel $app): CredentialModel {
-		if ( $app->isAccessTokenValid() ) {
+	public function token(Configuration $client, ApplicationModel $app): CredentialModel
+	{
+		if ($app->isAccessTokenValid()) {
 			return $app->get('credential');
 		}
 
-		$app->set('credential', [			
+		$app->set('credential', [
 			'token_type' => 'Bearer',
 			'access_token' => 'jwt',
 			'scope' => ['read', 'write'],
@@ -60,13 +64,14 @@ class ProdEnv implements EnvInterface {
 	 * @since 0.1.0
 	 * @return Request
 	 */
-	public function prepare(Configuration $client, ApplicationModel $app): Request {
+	public function prepare(Configuration $client, ApplicationModel $app): Request
+	{
 		return new Request($client);
 	}
 }
 
-class MainApp extends ApplicationModel {
-
+class MainApp extends ApplicationModel
+{
 	/**
 	 * Must return the enviroment object according to
 	 * the current enviroment.
@@ -74,8 +79,9 @@ class MainApp extends ApplicationModel {
 	 * @since 1.0.8
 	 * @return EnvInterface
 	 */
-	public function createEnviroment(): EnvInterface {
-		if ( $this->get('env', static::ENV_PRODUCTION) ) {
+	public function createEnvironment(): EnvInterface
+	{
+		if ($this->get('env', static::ENV_PRODUCTION)) {
 			return new ProdEnv();
 		}
 
@@ -89,7 +95,7 @@ class MainApp extends ApplicationModel {
 class ApplicationModelTest extends TestCase
 {
 	/** @test Valid mutation. */
-	public function assertIfCanMutateEnv ()
+	public function assertIfCanMutateEnv()
 	{
 		$m = new MainApp();
 		$m->set('environment', MainApp::ENV_PRODUCTION);
@@ -98,7 +104,7 @@ class ApplicationModelTest extends TestCase
 	}
 
 	/** @test Valid mutation. */
-	public function throwExceptionWhenSetAnInvalidEnv ()
+	public function throwExceptionWhenSetAnInvalidEnv()
 	{
 		$this->expectException(RuntimeException::class);
 
@@ -107,7 +113,7 @@ class ApplicationModelTest extends TestCase
 	}
 
 	/** @test Valid mutation. */
-	public function assertIfCanMutateDebugMode ()
+	public function assertIfCanMutateDebugMode()
 	{
 		$m = new MainApp();
 
@@ -118,21 +124,21 @@ class ApplicationModelTest extends TestCase
 	}
 
 	/** @test Valid mutation. */
-	public function assertIfCanMutateCredential ()
+	public function assertIfCanMutateCredential()
 	{
 		$m = new MainApp();
 		$c = new CredentialModel();
 
 		$this->assertSame($m->set('credential', $c)->get('credential'), $c);
 
-		$this->assertSame($m->set('credential', [			
+		$this->assertSame($m->set('credential', [
 			'token_type' => 'Bearer',
 			'access_token' => 'jwt',
 			'scope' => ['read', 'write'],
 			'consented_on' => 1662001200,
 			'expires_on' => 1662001200+300,
 			'expires_in' => 300,
-		])->get('credential')->export(), [			
+		])->get('credential')->export(), [
 			'token_type' => 'Bearer',
 			'access_token' => 'jwt',
 			'scope' => ['read', 'write'],
@@ -144,7 +150,7 @@ class ApplicationModelTest extends TestCase
 	}
 
 	/** @test Valid mutation. */
-	public function throwExceptionWhenSetAnInvalidCredential ()
+	public function throwExceptionWhenSetAnInvalidCredential()
 	{
 		$this->expectException(RuntimeException::class);
 
@@ -153,19 +159,19 @@ class ApplicationModelTest extends TestCase
 	}
 
 	/** @test Valid mutation. */
-	public function assertIfIsAccessTokenValid ()
+	public function assertIfIsAccessTokenValid()
 	{
-		$c = CredentialModel::import([			
+		$c = CredentialModel::import([
 			'token_type' => 'Bearer',
 			'access_token' => 'jwt',
 			'scope' => ['read', 'write'],
 			'consented_on' => 1662001200,
 			'expires_on' => '2099-09-01 00:00:00'
 		]);
-		
+
 
 		$m = new MainApp();
-		
+
 		// empty credential
 		$this->assertFalse($m->isAccessTokenValid());
 
@@ -186,22 +192,22 @@ class ApplicationModelTest extends TestCase
 	}
 
 	/** @test Invalid mutation. */
-	public function throwExceptionWhenSetAnInvalidScope ()
+	public function throwExceptionWhenSetAnInvalidScope()
 	{
 		$this->expectException(RuntimeException::class);
 
 		$m = new CredentialModel();
 		$m->set('scope', false);
 	}
-	
+
 	/** @test Valid mutation. */
-	public function assertIfIsExported ()
+	public function assertIfIsExported()
 	{
 		$m = new MainApp();
 
 		$this->assertSame(
-			$m->export(), 
-			[			
+			$m->export(),
+			[
 				'environment' => MainApp::ENV_HOMOL,
 				'debug_mode' => false,
 				'client_id' => null,
@@ -211,18 +217,18 @@ class ApplicationModelTest extends TestCase
 			]
 		);
 	}
-	
+
 	/** @test Valid mutation. */
-	public function assertIfIsCreated ()
+	public function assertIfIsCreated()
 	{
-		$c = CredentialModel::import([			
+		$c = CredentialModel::import([
 			'token_type' => 'Bearer',
 			'access_token' => 'jwt',
 			'scope' => ['read', 'write'],
 			'consented_on' => 1662001200,
 			'expires_on' => '2099-09-01 00:00:00'
 		]);
-		
+
 
 		$m = MainApp::import([
 			'environment' => MainApp::ENV_PRODUCTION,
@@ -232,9 +238,9 @@ class ApplicationModelTest extends TestCase
 			'credential' => $c->export(),
 			'certificate' => [],
 		]);
-		
+
 		$this->assertSame(
-			$m->export(), 
+			$m->export(),
 			[
 				'environment' => MainApp::ENV_PRODUCTION,
 				'debug_mode' => true,

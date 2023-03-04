@@ -60,24 +60,6 @@ With `debug()` method you will be able to enable requests debugging. You also ma
 
 > **NOTE**: Debug messages will only be output to `Logger` when `debug()` mode is active.
 
-You can also control configurations by usign `.env` files with `env()` method. You must set then the `path` where `.env` file is located and the current `env`. When `env` is `dev`, `Configuration` object will try to get `.env.dev` file at your `path`. The `.env` variables are:
-
-```
-CURL_CLIENT_USERNAME=username
-CURL_CLIENT_PASSWORD=password
-CURL_DEBUG=true
-CURL_HTTP_HOST=http://localhost
-CURL_HTTP_USER_AGENT=MyServer/1.0
-CURL_HTTP_TIMEOUT=60
-CURL_HTTP_CONN_TIMEOUT=60
-CURL_PROXY_HOST=proxy://localhost
-CURL_PROXY_PORT=5050
-CURL_PROXY_USER=proxyusername
-CURL_PROXY_PASSWORD=proxypassword
-```
-
-> See at [.env.example](.env.example) to see an example.
-
 ### Requests
 
 After configuration is done, you are ready to use `Request` object. You may set a `Configuration` object to `Request` constructor or it will get the default configuration.
@@ -86,10 +68,10 @@ Then, you must start with request's methods: `delete()`, `head()`, `get()`, `opt
 
 Method | Description
 --- | ---
-`headers()` | Manages all request headers.
-`applyHeaders()` | Applies headers to request headers.
 `basicAuth()` | Apply basic authorization header.
 `authorization()` | Apply authorization header with an api key.
+`getHeaders()` | Manages all request headers.
+`headers()` | Applies headers to request headers.
 `data()` | Set the post data.
 `params()` | Set parameters replaces to URI. At URI, `/posts/{id}` you may set `params(['id', 1])`, then it will be replaced `/posts/1`.
 `query()` | Set query string parameters.
@@ -97,9 +79,9 @@ Method | Description
 
 When your request is done, you need to use `call()` method. The `call()` method will:
 
-* Throw an `ApiResponseException`, if response fails;
+* Throw an `ApiRequestException`, if response fails;
 * Throw an `ApiResponseException`, if response has a non 2xx response;
-* Return an `array` in format `[$body, $httpCode, $headers]` which you can handle with `list($body, $httpCode, $headers) = $request->call();`.
+* Return a `Response` object with all response data and request reference.
 
 #### Headers
 
