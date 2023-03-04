@@ -1,4 +1,5 @@
 <?php
+
 namespace Piggly\Tests\ApiClient\Supports;
 
 use PHPUnit\Framework\TestCase;
@@ -21,12 +22,12 @@ class RequestTest extends TestCase
 	/**
 	 * Setup configuration.
 	 * It will use a fake API for testing.
-	 * 
+	 *
 	 * @see https://jsonplaceholder.typicode.com/
 	 * @since 1.0.0
 	 * @return void
 	 */
-	protected  function setUp () : void
+	protected function setUp(): void
 	{
 		$this->config = new Configuration();
 
@@ -37,48 +38,48 @@ class RequestTest extends TestCase
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanDoGETRequest ()
+	public function assertIfCanDoGETRequest()
 	{
 		$request = new Request($this->config);
-		list($body, $code, $headers) = $request->get('/posts/1')->call();
+		$response = $request->get('/posts/1')->call();
 
 		$this->assertSame(
 			1,
-			$body['id']
+			$response->getBody()['id']
 		);
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanDoPATCHRequest ()
+	public function assertIfCanDoPATCHRequest()
 	{
 		$request = new Request($this->config);
-		$request->headers()->add('Content-Type', 'application/json; charset=UTF-8');
-		
+		$request->getHeaders()->add('Content-Type', 'application/json; charset=UTF-8');
+
 		$_body = [
 			'title' => 'foo'
 		];
 
-		list($body, $code, $headers) = $request->put('/posts/1', $_body)->call();
+		$response = $request->put('/posts/1', $_body)->call();
 
 		$this->assertSame(
 			'foo',
-			$body['title']
+			$response->getBody()['title']
 		);
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanDoPOSTRequest ()
+	public function assertIfCanDoPOSTRequest()
 	{
 		$request = new Request($this->config);
-		$request->headers()->add('Content-Type', 'application/json; charset=UTF-8');
-		
+		$request->getHeaders()->add('Content-Type', 'application/json; charset=UTF-8');
+
 		$_body = [
 			'userId' => 1,
 			'title' => 'foo',
 			'body' => 'bar'
 		];
 
-		list($body, $code, $headers) = $request->post('/posts', $_body)->call();
+		$response = $request->post('/posts', $_body)->call();
 
 		$this->assertSame(
 			[
@@ -87,16 +88,16 @@ class RequestTest extends TestCase
 				'body' => 'bar',
 				'id' => 101
 			],
-			$body
+			$response->getBody()
 		);
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanDoPUTRequest ()
+	public function assertIfCanDoPUTRequest()
 	{
 		$request = new Request($this->config);
-		$request->headers()->add('Content-Type', 'application/json; charset=UTF-8');
-		
+		$request->getHeaders()->add('Content-Type', 'application/json; charset=UTF-8');
+
 		$_body = [
 			'id' => 1,
 			'userId' => 1,
@@ -104,7 +105,7 @@ class RequestTest extends TestCase
 			'body' => 'bar'
 		];
 
-		list($body, $code, $headers) = $request->put('/posts/1', $_body)->call();
+		$response = $request->put('/posts/1', $_body)->call();
 
 		$this->assertSame(
 			[
@@ -113,16 +114,16 @@ class RequestTest extends TestCase
 				'title' => 'foo',
 				'body' => 'bar'
 			],
-			$body
+			$response->getBody()
 		);
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanPreparePOSTDataAsURLEncoded ()
+	public function assertIfCanPreparePOSTDataAsURLEncoded()
 	{
 		$request = new Request($this->config);
-		$request->headers()->add('Content-Type', 'application/x-www-form-urlencoded');
-		
+		$request->getHeaders()->add('Content-Type', 'application/x-www-form-urlencoded');
+
 		$_body = [
 			'id' => 1,
 			'userId' => 1,
@@ -132,16 +133,16 @@ class RequestTest extends TestCase
 
 		$this->assertSame(
 			\http_build_query($_body),
-			$this->_invoke($request, 'preparePostData', $request->headers(), $_body)
+			$this->_invoke($request, 'preparePostData', $request->getHeaders(), $_body)
 		);
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanPreparePOSTDataAsJson ()
+	public function assertIfCanPreparePOSTDataAsJson()
 	{
 		$request = new Request($this->config);
-		$request->headers()->add('Content-Type', 'application/json');
-		
+		$request->getHeaders()->add('Content-Type', 'application/json');
+
 		$_body = [
 			'id' => 1,
 			'userId' => 1,
@@ -151,12 +152,12 @@ class RequestTest extends TestCase
 
 		$this->assertSame(
 			\json_encode($_body),
-			$this->_invoke($request, 'preparePostData', $request->headers(), $_body)
+			$this->_invoke($request, 'preparePostData', $request->getHeaders(), $_body)
 		);
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanSetBasicAuthorizationHeader ()
+	public function assertIfCanSetBasicAuthorizationHeader()
 	{
 		$this->config->username('foo')->password('bar');
 
@@ -165,12 +166,12 @@ class RequestTest extends TestCase
 
 		$this->assertSame(
 			['Basic '.\base64_encode('foo:bar')],
-			$request->headers()->get('authorization')
+			$request->getHeaders()->get('authorization')
 		);
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanSetAuthorizationHeader ()
+	public function assertIfCanSetAuthorizationHeader()
 	{
 		$this->config->apiKey('main', 'foo', 'Bearer');
 
@@ -179,12 +180,12 @@ class RequestTest extends TestCase
 
 		$this->assertSame(
 			['Bearer foo'],
-			$request->headers()->get('authorization')
+			$request->getHeaders()->get('authorization')
 		);
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanPrepareUri ()
+	public function assertIfCanPrepareUri()
 	{
 		$request = new Request($this->config);
 		$request->get('/posts/1');
@@ -196,7 +197,7 @@ class RequestTest extends TestCase
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanPrepareUriReplacingParams ()
+	public function assertIfCanPrepareUriReplacingParams()
 	{
 		$request = new Request($this->config);
 		$request->get('/posts/{id}')->params(['id' => 1]);
@@ -208,7 +209,7 @@ class RequestTest extends TestCase
 	}
 
 	/** @test Expecting posive assertion. */
-	public function assertIfCanPrepareUriWithQueryParameters ()
+	public function assertIfCanPrepareUriWithQueryParameters()
 	{
 		$request = new Request($this->config);
 		$request->get('/posts/1')->query(['foo' => 'bar']);
@@ -227,7 +228,7 @@ class RequestTest extends TestCase
 	 * @param array ...$args
 	 * @return void
 	 */
-	private function _invoke ( Request $request, string $method, ...$args )
+	private function _invoke(Request $request, string $method, ...$args)
 	{
 		$class = new ReflectionClass($request);
 		$method = $class->getMethod($method);

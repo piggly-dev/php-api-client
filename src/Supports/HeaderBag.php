@@ -126,6 +126,18 @@ class HeaderBag
 	}
 
 	/**
+	 * Remove all headers.
+	 *
+	 * @since 2.0.0
+	 * @return HeaderBag
+	 */
+	public function removeAll()
+	{
+		$this->_headers = [];
+		return $this;
+	}
+
+	/**
 	 * Merge current headers to new ones.
 	 * Current headers may be replaced by $headers.
 	 *
