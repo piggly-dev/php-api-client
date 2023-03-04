@@ -5,6 +5,7 @@ namespace Piggly\ApiClient;
 use InvalidArgumentException;
 use Monolog\Logger;
 use Piggly\ApiClient\Supports\HeaderBag;
+use RuntimeException;
 
 /**
  * The master configuration to ApiClient object.
@@ -12,6 +13,7 @@ use Piggly\ApiClient\Supports\HeaderBag;
  * api HTTP host.
  *
  * @since 1.0.0
+ * @since 2.0.0 Cannot load data from .env file.
  * @category Class
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient
@@ -493,71 +495,6 @@ class Configuration
 	}
 
 	/**
-	 * Set current environment related to configuration.
-	 * $env represents the filename such as: .env.{$env}.
-	 * This means:
-	 *
-	 * $env = null => '.env'
-	 * $env = 'dev' => '.env.dev' file
-	 *
-	 * It also maps the following settings:
-	 *
-	 * CURL_CLIENT_USERNAME (string)
-	 * CURL_CLIENT_PASSWORD (string)
-	 *
-	 * CURL_DEBUG (bool)
-	 *
-	 * CURL_HTTP_HOST (string)
-	 * CURL_HTTP_USER_AGENT (string)
-	 * CURL_HTTP_TIMEOUT (integer)
-	 * CURL_HTTP_CONN_TIMEOUT (integer)
-	 *
-	 * CURL_PROXY_HOST (string)
-	 * CURL_PROXY_PORT (integer)
-	 * CURL_PROXY_TYPE (integer)
-	 * CURL_PROXY_USER (string)
-	 * CURL_PROXY_PASSWORD (string)
-	 *
-	 * @param string $path Absolute path to env files.
-	 * @param string $env
-	 * @since 1.0.0
-	 * @return Configuration
-	 */
-	public function env(string $path, string $env = null)
-	{
-		$env = is_null($env) ? 'default' : trim($env, '.');
-		$this->_settings['env'] = $env;
-
-		(\Dotenv\Dotenv::createImmutable(
-			$path,
-			$env === 'default' ? '.env' : '.env.'.$env
-		))->load();
-
-		$_settings = [
-			'CURL_CLIENT_USERNAME' => 'username',
-			'CURL_CLIENT_PASSWORD' => 'password',
-			'CURL_DEBUG' => 'debug',
-			'CURL_HTTP_HOST' => 'host',
-			'CURL_HTTP_USER_AGENT' => 'userAgent',
-			'CURL_HTTP_TIMEOUT' => 'timeout',
-			'CURL_HTTP_CONN_TIMEOUT' => 'connectionTimeout',
-			'CURL_PROXY_HOST' => 'proxyHost',
-			'CURL_PROXY_PORT' => 'proxyPort',
-			'CURL_PROXY_TYPE' => 'proxyType',
-			'CURL_PROXY_USER' => 'proxyUser',
-			'CURL_PROXY_PASSWORD' => 'proxyPassword'
-		];
-
-		foreach ($_settings as $setting => $method) {
-			if (isset($_ENV[$setting]) && !empty($_ENV[$setting])) {
-				$this->{$method}($_ENV[$setting]);
-			}
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Get current environment related to configuration.
 	 *
 	 * @since 1.0.0
@@ -658,6 +595,18 @@ class Configuration
 		$conf->_settings = $this->_settings;
 
 		return $conf;
+	}
+
+	/**
+	 * Method not available anymore.
+	 *
+	 * @since 1.0.0
+	 * @deprecated 2.0.0
+	 * @return Configuration
+	 */
+	public function env(string $path, string $env = null)
+	{
+		throw new RuntimeException('Method not available anymore.');
 	}
 
 	/**

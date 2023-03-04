@@ -4,14 +4,13 @@ namespace Piggly\ApiClient\Exceptions;
 
 use Exception;
 use Monolog\Logger;
-use Piggly\ApiClient\Configuration;
-use Piggly\ApiClient\Supports\HeaderBag;
+use Piggly\ApiClient\Response;
 
 /**
  * An Api Exception which makes link to server response object,
  * HTTP headers and body.
  *
- * @since 1.0.0
+ * @since 2.0.0
  * @category Class
  * @package Piggly\ApiClient
  * @subpackage Piggly\ApiClient\Client
@@ -21,148 +20,47 @@ use Piggly\ApiClient\Supports\HeaderBag;
 class ApiResponseException extends Exception
 {
 	/**
-	 * HTTP request method.
-	 * @var string
-	 * @since 1.0.0
+	 * HTTP response.
+	 * @var Response
+	 * @since 2.0.0
 	 */
-	protected $_method;
-
-	/**
-	 * HTTP request uri.
-	 * @var string
-	 * @since 1.0.0
-	 */
-	protected $_uri;
-
-	/**
-	 * The HTTP body of the server response
-	 * either as JSON or string.
-	 *
-	 * @var mixed
-	 * @since 1.0.0
-	 */
-	protected $_body;
-
-	/**
-	 * All HTTP headers from
-	 * the server response.
-	 *
-	 * @var HeaderBag
-	 * @since 1.0.0
-	 */
-	protected $_headers;
-
-	/**
-	 * The deserialized server response object.
-	 *
-	 * @var mixed
-	 * @since 1.0.0
-	 */
-	protected $_object;
+	protected $_response;
 
 	/**
 	 * Constructor to exception.
 	 *
 	 * @param string $message
 	 * @param integer $code
-	 * @param HeaderBag|array|string $headers
-	 * @param mixed $body
-	 * @param string $method
-	 * @param string $uri
-	 * @param Configuration $config
-	 * @since 1.0.0
-	 * @since 1.0.6 Fixed to response error at log data
+	 * @param Response $response
+	 * @since 2.0.0
 	 * @return void
 	 */
 	public function __construct(
 		$message = "",
 		$code = 0,
-		$headers = null,
-		$body = null,
-		$method = null,
-		$uri = null,
-		$config = null
+		$response = null
 	) {
 		parent::__construct($message, $code);
+		$this->_response = $response;
 
-		$this->_headers = !is_null($headers) ? HeaderBag::prepare($headers) : null;
-		$this->_body = $body;
-		$this->_method = $method;
-		$this->_uri = $uri;
-
-		if ($config instanceof Configuration) {
-			$config->log(Logger::ERROR, 'api.response.error -> '.$message, ['method' => $this->_method, 'uri' => $this->_uri]);
-		}
+		$response->getRequest()->getConfig()->log(
+			Logger::ERROR,
+			'api.request.error -> '.$message,
+			[
+				'method' => $response->getMethod(),
+				'uri' => $response->getUri()
+			]
+		);
 	}
 
 	/**
-	 * Get the HTTP method.
+	 * Get the response.
 	 *
-	 * @since 1.0.0
-	 * @return mixed
+	 * @since 2.0.0
+	 * @return Response
 	 */
-	public function getHTTPMethod()
+	public function getResponse(): Response
 	{
-		return $this->_method ?? null;
-	}
-
-	/**
-	 * Get the HTTP uri.
-	 *
-	 * @since 1.0.0
-	 * @return mixed
-	 */
-	public function getUri()
-	{
-		return $this->_uri ?? null;
-	}
-
-	/**
-	 * Get the HTTP body of the server response
-	 * either as JSON or string.
-	 *
-	 * @since 1.0.0
-	 * @return mixed
-	 */
-	public function getResponseBody()
-	{
-		return $this->_body ?? null;
-	}
-
-	/**
-	 * All HTTP headers from
-	 * the server response.
-	 *
-	 * @since 1.0.0
-	 * @return HeaderBag|null
-	 */
-	public function getResponseHeaders(): ?HeaderBag
-	{
-		return $this->_headers ?? null;
-	}
-
-	/**
-	 * Set the deseralized response object
-	 * (during deserialization).
-	 *
-	 * @param mixed $response
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public function setReponseObject($response)
-	{
-		$this->_object = $response;
-		return $this;
-	}
-
-	/**
-	 * The deserialized server response object.
-	 *
-	 * @since 1.0.0
-	 * @return mixed
-	 */
-	public function getResponseObject()
-	{
-		return $this->_object ?? null;
+		return $this->_response;
 	}
 }
