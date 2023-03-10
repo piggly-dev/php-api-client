@@ -76,3 +76,7 @@
 * Many break changes, including a new Response object and changes on ApiResponseExpection properties.
 * Some part of the code was optimized and some methods were deprecated.
 * You must see code for details and changes.
+
+## `2.1.0` at `2023-03-10`
+
+* Replaced ApplicationModel with ApplicationInterface.
