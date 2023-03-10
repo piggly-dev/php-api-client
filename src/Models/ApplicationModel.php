@@ -2,6 +2,7 @@
 
 namespace Piggly\ApiClient\Models;
 
+use Piggly\ApiClient\Interfaces\ApplicationInterface;
 use Piggly\ApiClient\Interfaces\EnvInterface;
 use RuntimeException;
 
@@ -22,7 +23,7 @@ use RuntimeException;
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
-abstract class ApplicationModel extends AbstractModel
+abstract class ApplicationModel extends AbstractModel implements ApplicationInterface
 {
 	/**
 	 * Test Environment.

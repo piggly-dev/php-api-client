@@ -3,8 +3,8 @@
 namespace Piggly\ApiClient\Environments;
 
 use Piggly\ApiClient\Configuration;
+use Piggly\ApiClient\Interfaces\ApplicationInterface;
 use Piggly\ApiClient\Interfaces\EnvInterface;
-use Piggly\ApiClient\Models\ApplicationModel;
 use Piggly\ApiClient\Request;
 
 /**
@@ -35,8 +35,8 @@ abstract class AbstractEnvironment implements EnvInterface
 	 * Init enviroment at client configuration.
 	 *
 	 * @param Configuration $client
-	 * @param ApplicationModel $app
-	 * @since 1.0.11
+	 * @param ApplicationInterface $app
+	 * @since 2.1.0
 	 * @return void
 	 */
 	public function init(Configuration $client, $app)
@@ -51,8 +51,8 @@ abstract class AbstractEnvironment implements EnvInterface
 	 * Must return request created.
 	 *
 	 * @param Configuration $client
-	 * @param ApplicationModel $app
-	 * @since 1.0.11
+	 * @param ApplicationInterface $app
+	 * @since 2.1.0
 	 * @return Request
 	 */
 	public function prepare(Configuration $client, $app): Request
@@ -65,7 +65,7 @@ abstract class AbstractEnvironment implements EnvInterface
 		$request  = new Request($_client);
 		$credentials = $this->token($client, $app);
 
-		$request->applyHeaders([
+		$request->headers([
 			'Authorization' => \sprintf('%s %s', $credentials->get('token_type'), $credentials->get('access_token')),
 		]);
 

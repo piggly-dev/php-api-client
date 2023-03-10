@@ -5,7 +5,7 @@ namespace Piggly\ApiClient;
 use DateTimeImmutable;
 use DateTimeZone;
 use Monolog\Logger;
-use Piggly\ApiClient\Models\ApplicationModel;
+use Piggly\ApiClient\Interfaces\ApplicationInterface;
 use RuntimeException;
 
 /**
@@ -35,8 +35,8 @@ abstract class Wrapper
 	/**
 	 * Application settings.
 	 *
-	 * @since 1.0.9
-	 * @var ApplicationModel
+	 * @since 2.1.0
+	 * @var ApplicationInterface
 	 */
 	protected $_app;
 
@@ -52,14 +52,14 @@ abstract class Wrapper
 	 * Creates the API wrapper
 	 * to handle all API endpoints.
 	 *
-	 * @param ApplicationModel $app
+	 * @param ApplicationInterface $app
 	 * @param Logger|null $logger
-	 * @since 1.0.9
+	 * @since 2.1.0
 	 * @return void
 	 * @throws RuntimeException
 	 */
 	public function __construct(
-		ApplicationModel $app,
+		ApplicationInterface $app,
 		Logger $logger = null
 	) {
 		$this->_app = $app;
@@ -102,10 +102,10 @@ abstract class Wrapper
 	/**
 	 * Get application.
 	 *
-	 * @since 1.0.9
-	 * @return ApplicationModel
+	 * @since 2.1.0
+	 * @return ApplicationInterface
 	 */
-	public function getApp(): ApplicationModel
+	public function getApp(): ApplicationInterface
 	{
 		return $this->_app;
 	}
@@ -166,5 +166,16 @@ abstract class Wrapper
 		$value = \strval($value);
 
 		return !empty($format) ? DateTimeImmutable::createFromFormat($format, $value, static::$_timezone) : new DateTimeImmutable($value, static::$_timezone);
+	}
+
+	/**
+	 * Get timezone.
+	 *
+	 * @since 2.1.0
+	 * @return DateTimeZone
+	 */
+	public static function getTimezone(): DateTimeZone
+	{
+		return static::$_timezone;
 	}
 }

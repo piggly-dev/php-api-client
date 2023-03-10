@@ -3,7 +3,6 @@
 namespace Piggly\ApiClient\Interfaces;
 
 use Piggly\ApiClient\Configuration;
-use Piggly\ApiClient\Models\ApplicationModel;
 use Piggly\ApiClient\Models\CredentialModel;
 use Piggly\ApiClient\Request;
 
@@ -23,11 +22,11 @@ interface EnvInterface
 	 * Init enviroment at client configuration.
 	 *
 	 * @param Configuration $client
-	 * @param ApplicationModel $app
+	 * @param ApplicationInterface $app
 	 * @since 1.0.9
 	 * @return void
 	 */
-	public function init(Configuration $client, ApplicationModel $app);
+	public function init(Configuration $client, ApplicationInterface $app);
 
 	/**
 	 * Do an OAuth connection to get the access token.
@@ -35,11 +34,11 @@ interface EnvInterface
 	 * and return the credential model created.
 	 *
 	 * @param Configuration $client
-	 * @param ApplicationModel $app
+	 * @param ApplicationInterface $app
 	 * @since 1.0.9
 	 * @return CredentialModel
 	 */
-	public function token(Configuration $client, ApplicationModel $app): CredentialModel;
+	public function token(Configuration $client, ApplicationInterface $app): CredentialModel;
 
 	/**
 	 * Prepare request authenticated requests, filling its headers,
@@ -47,9 +46,9 @@ interface EnvInterface
 	 * Must return request created.
 	 *
 	 * @param Configuration $client
-	 * @param ApplicationModel $app
+	 * @param ApplicationInterface $app
 	 * @since 1.0.9
 	 * @return Request
 	 */
-	public function prepare(Configuration $client, ApplicationModel $app): Request;
+	public function prepare(Configuration $client, ApplicationInterface $app): Request;
 }
