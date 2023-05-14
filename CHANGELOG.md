@@ -80,3 +80,7 @@
 ## `2.1.0` at `2023-03-10`
 
 * Replaced ApplicationModel with ApplicationInterface.
+
+## `2.1.1` at `2023-05-14`
+
+* Added interfaces for Arrayable, Importable, SensitiveDataArrayable objects.
