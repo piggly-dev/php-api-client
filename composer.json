@@ -1,39 +1,39 @@
 {
-    "name": "piggly/php-api-client",
-    "description": "A client starter-kit used to interact with any REST API.",
-    "minimum-stability": "stable",
-    "version": "2.1.1",
-    "keywords": [
-        "piggly",
-        "api",
-        "restful api",
-        "client", 
-        "curl"
-    ],
-    "type": "library",
-    "homepage": "https://github.com/piggly-dev/php-api-client",
-    "autoload": {
-        "psr-4": {
-            "Piggly\\ApiClient\\": "src/"
-        }
-    },
-    "require": {
-        "php": ">=7.2",
-        "monolog/monolog": "^2.2",
-        "ext-curl": ">=7.2",
-        "ext-json": ">=7.2"
-    },
-    "require-dev": {
-        "php": ">=7.3",
-        "phpunit/phpunit": "^9.5"
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Caique Araujo",
-            "email": "caique@piggly.com.br",
-            "homepage": "https://github.com/caiquearaujo",
-            "role": "Developer"
-        }
-    ]
+  "name": "piggly/php-api-client",
+  "description": "A client starter-kit used to interact with any REST API.",
+  "minimum-stability": "stable",
+  "version": "2.1.2",
+  "keywords": [
+    "piggly",
+    "api",
+    "restful api",
+    "client",
+    "curl"
+  ],
+  "type": "library",
+  "homepage": "https://github.com/piggly-dev/php-api-client",
+  "autoload": {
+    "psr-4": {
+      "Piggly\\ApiClient\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.2",
+    "monolog/monolog": "^2.2",
+    "ext-curl": ">=7.2",
+    "ext-json": ">=7.2"
+  },
+  "require-dev": {
+    "php": ">=7.3",
+    "phpunit/phpunit": "^9.5"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Caique Araujo",
+      "email": "caique@piggly.com.br",
+      "homepage": "https://github.com/caiquearaujo",
+      "role": "Developer"
+    }
+  ]
 }
