@@ -1,6 +1,6 @@
 <?php
 
-namespace Pgly\PagarMe\Api\Interfaces;
+namespace Piggly\ApiClient\Interfaces;
 
 /**
  * Object that can be imported from an array.

@@ -84,3 +84,7 @@
 ## `2.1.1` at `2023-05-14`
 
 * Added interfaces for Arrayable, Importable, SensitiveDataArrayable objects.
+
+## `2.1.1` at `2023-05-16`
+
+* Fix wrong namespace on Importable interface.
