@@ -3,7 +3,6 @@
 namespace Piggly\ApiClient\Interfaces;
 
 use Piggly\ApiClient\Configuration;
-use Piggly\ApiClient\Models\CredentialModel;
 use Piggly\ApiClient\Request;
 
 /**
@@ -36,9 +35,9 @@ interface EnvInterface
 	 * @param Configuration $client
 	 * @param ApplicationInterface $app
 	 * @since 1.0.9
-	 * @return CredentialModel
+	 * @return CredentialInterface
 	 */
-	public function token(Configuration $client, ApplicationInterface $app): CredentialModel;
+	public function token(Configuration $client, ApplicationInterface $app): CredentialInterface;
 
 	/**
 	 * Prepare request authenticated requests, filling its headers,
