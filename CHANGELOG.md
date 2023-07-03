@@ -88,3 +88,7 @@
 ## `2.1.1` at `2023-05-16`
 
 * Fix wrong namespace on Importable interface.
+
+## `2.2.0` at `2023-07-03`
+
+* Replaced CredentialModel with CredentialInterface.

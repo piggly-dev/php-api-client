@@ -3,6 +3,7 @@
 namespace Piggly\ApiClient\Models;
 
 use Piggly\ApiClient\Interfaces\ApplicationInterface;
+use Piggly\ApiClient\Interfaces\CredentialInterface;
 use Piggly\ApiClient\Interfaces\EnvInterface;
 use RuntimeException;
 
@@ -79,11 +80,11 @@ abstract class ApplicationModel extends AbstractModel implements ApplicationInte
 	}
 
 	/**
-	 * Mutate credential to CredentialModel.
+	 * Mutate credential to credential model.
 	 *
 	 * @param mixed $value
 	 * @since 1.0.9
-	 * @return CredentialModel
+	 * @return CredentialInterface
 	 * @throws RuntimeException
 	 */
 	protected function mutate_credential($value)

@@ -4,6 +4,7 @@ namespace Piggly\ApiClient\Models;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use Piggly\ApiClient\Interfaces\CredentialInterface;
 use RuntimeException;
 
 /**
@@ -23,7 +24,7 @@ use RuntimeException;
  * @author Caique Araujo <caique@piggly.com.br>
  * @author Piggly Lab <dev@piggly.com.br>
  */
-class CredentialModel extends AbstractModel
+class CredentialModel extends AbstractModel implements CredentialInterface
 {
 	/**
 	 * Bearer token type.
@@ -143,6 +144,28 @@ class CredentialModel extends AbstractModel
 	}
 
 	/**
+	 * Get access token type.
+	 *
+	 * @since 2.2.0
+	 * @return string
+	 */
+	public function getTokenType(): string
+	{
+		return $this->get('token_type', static::TOKEN_TYPE_BEARER);
+	}
+
+	/**
+	 * Get access token.
+	 *
+	 * @since 2.2.0
+	 * @return string
+	 */
+	public function getAccessToken(): string
+	{
+		return $this->get('access_token', '');
+	}
+
+	/**
 	 * Return if credential has expired.
 	 *
 	 * @since 1.0.9
@@ -193,7 +216,7 @@ class CredentialModel extends AbstractModel
 		$m->set('token_type', $data['token_type'] ?? static::TOKEN_TYPE_BEARER);
 		$m->set('access_token', $data['access_token'] ?? null);
 		$m->set('scope', $data['scope'] ?? []);
-		$m->set('timezone', $data['timezone'] ?? new DateTimeZone('UTC'));
+		$m->set('timezone', new DateTimeZone($data['timezone'] ?? 'UTC'));
 
 		if (!empty($data['consented_on'])) {
 			$m->set('consented_on', $data['consented_on']);

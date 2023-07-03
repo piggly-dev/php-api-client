@@ -2,7 +2,7 @@
   "name": "piggly/php-api-client",
   "description": "A client starter-kit used to interact with any REST API.",
   "minimum-stability": "stable",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "keywords": [
     "piggly",
     "api",
